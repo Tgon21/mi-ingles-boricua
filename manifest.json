@@ -1,0 +1,13 @@
+{
+  "name": "Mi Inglés Boricua",
+  "short_name": "Inglés",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#0b1020",
+  "icons": [
+    { "src": "favicon-32.png", "type": "image/png", "sizes": "32x32" },
+    { "src": "apple-touch-icon.png", "type": "image/png", "sizes": "180x180" },
+    { "src": "icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any maskable" }
+  ]
+}

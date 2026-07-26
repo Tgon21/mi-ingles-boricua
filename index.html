@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0b1020">
+<title>Mi Inglés Boricua — Tarjetas</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Inglés">
+<link rel="manifest" href="manifest.json">
+<style>
+  :root{
+    --page-bg:linear-gradient(180deg,#0b1020,#0e1530 60%,#0b1020);
+    --bg:#0b1020; --card:#161d33; --card2:#1e2745; --ink:#f2f5ff; --muted:#9aa6c7;
+    --accent:#ffb43a; --accent2:#4fd0e0; --good:#37d399; --line:#2a3556;
+    --shadow:rgba(0,0,0,.35);
+  }
+  body.light{
+    --page-bg:linear-gradient(180deg,#eef2fb,#f6f8fd 60%,#eef2fb);
+    --bg:#f6f8fd; --card:#ffffff; --card2:#eef2fb; --ink:#182042; --muted:#5b6788;
+    --accent:#eaa22a; --accent2:#1595a6; --good:#1eac74; --line:#dde3f1;
+    --shadow:rgba(30,40,80,.14);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  html,body{margin:0; height:100%}
+  body{
+    background:var(--page-bg);
+    color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    display:flex; flex-direction:column; min-height:100%;
+    transition:background .25s, color .25s;
+  }
+  header{padding:14px 16px 8px; text-align:center; position:relative}
+  .themebtn{position:absolute; top:10px; right:12px; width:38px; height:38px; border-radius:50%;
+    background:var(--card); border:1px solid var(--line); color:var(--ink); font-size:17px; line-height:1}
+  .refreshbtn{position:absolute; top:10px; left:12px; width:38px; height:38px; border-radius:50%;
+    background:var(--card); border:1px solid var(--line); color:var(--ink); font-size:19px; line-height:1}
+  header h1{margin:0; font-size:19px; letter-spacing:.3px}
+  header .sub{color:var(--muted); font-size:12px; margin-top:2px}
+  nav{display:flex; gap:6px; padding:8px 12px; justify-content:center; flex-wrap:wrap}
+  nav button{
+    background:var(--card); color:var(--ink); border:1px solid var(--line);
+    padding:8px 14px; border-radius:999px; font-size:13px; font-weight:600;
+  }
+  nav button.active{background:var(--accent); color:#231a05; border-color:var(--accent)}
+  .filters{display:flex; gap:6px; justify-content:center; flex-wrap:wrap; padding:0 12px 8px}
+  .filters button{background:transparent; color:var(--muted); border:1px solid var(--line); padding:6px 12px; border-radius:999px; font-size:12px; font-weight:600}
+  .filters button.on{background:var(--accent2); color:#03232a; border-color:var(--accent2)}
+  main{flex:1; padding:10px 16px 30px; max-width:640px; margin:0 auto; width:100%}
+  .view{display:none}
+  .view.active{display:block}
+
+  /* Study */
+  .counter{text-align:center; color:var(--muted); font-size:13px; margin:6px 0 12px}
+  .flip{perspective:1400px; height:340px; margin:0 auto; max-width:520px}
+  .flip-inner{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d; cursor:pointer}
+  .flip.flipped .flip-inner{transform:rotateY(180deg)}
+  .face{
+    position:absolute; inset:0; backface-visibility:hidden; border-radius:22px;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    padding:26px; border:1px solid var(--line); box-shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  .face{box-shadow:0 10px 30px var(--shadow)}
+  .front{background:linear-gradient(160deg,var(--card2),var(--card)); }
+  .front .term{font-size:30px; font-weight:700; line-height:1.25}
+  .front .term.small{font-size:20px; line-height:1.35}
+  .front .hint{position:absolute; bottom:14px; left:0; right:0; color:var(--muted); font-size:12px}
+  .back{background:linear-gradient(160deg,#132a2e,#14203a); transform:rotateY(180deg); flex-direction:column; gap:12px}
+  body.light .back{background:linear-gradient(160deg,#e9faf6,#eaf1ff)}
+  .exbtn{background:transparent; border:1px solid var(--line); color:var(--muted); padding:8px 16px; border-radius:10px; font-size:13px; font-weight:600}
+  .back .ex{display:none}
+  .back.show .ex{display:block}
+  .back.show .exbtn{display:none}
+  .back .def{font-size:19px; line-height:1.45}
+  .back .ex{color:var(--accent2); font-size:15px; line-height:1.4}
+  .controls{display:flex; gap:10px; margin:16px auto 0; max-width:520px}
+  .controls button{flex:1; padding:14px; border-radius:14px; border:1px solid var(--line);
+    background:var(--card); color:var(--ink); font-size:15px; font-weight:600}
+  .controls button.primary{background:var(--accent); color:#231a05; border-color:var(--accent)}
+  .toolbar{display:flex; gap:8px; justify-content:center; margin-top:12px}
+  .toolbar button{background:transparent; color:var(--muted); border:1px solid var(--line); padding:8px 12px; border-radius:10px; font-size:12px}
+
+  /* Browse */
+  .search{width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--line); background:var(--card); color:var(--ink); font-size:15px}
+  .browsebar{display:flex; gap:8px; align-items:center; margin-bottom:10px}
+  .browsebar .search{flex:1}
+  .browsebar #revealToggle{background:var(--card); border:1px solid var(--line); color:var(--ink); border-radius:12px; padding:12px 14px; font-size:13px; font-weight:700; white-space:nowrap}
+  .row{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px 14px; margin-bottom:8px}
+  .row .tag{float:right; margin-right:8px; font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:var(--accent2); border:1px solid var(--line); border-radius:6px; padding:1px 6px}
+  .row .t{font-weight:700; font-size:16px}
+  .row .d{color:var(--muted); font-size:14px; margin-top:4px; display:none}
+  .row.revealed .d{display:block}
+  .row .exlink{display:inline-block; margin-top:8px; font-size:11px; color:var(--muted); border:1px solid var(--line); border-radius:6px; padding:3px 9px; background:transparent}
+  .row .ex2{color:var(--accent2); font-size:13px; margin-top:6px; line-height:1.4; display:none}
+  .row.show-ex .ex2{display:block}
+  .row.show-ex .exlink{border-color:var(--accent2); color:var(--accent2)}
+  .row .del{float:right; color:#ff8a8a; background:transparent; border:none; font-size:13px}
+
+  /* Add / Export */
+  textarea{width:100%; min-height:150px; padding:12px 14px; border-radius:12px; border:1px solid var(--line);
+    background:var(--card); color:var(--ink); font-size:14px; font-family:ui-monospace,Menlo,Consolas,monospace; line-height:1.5}
+  .btn{display:block; width:100%; padding:14px; border-radius:14px; border:none; font-size:16px; font-weight:700; margin-top:10px}
+  .btn.go{background:var(--good); color:#04231a}
+  .btn.alt{background:var(--accent2); color:#062227}
+  .note{color:var(--muted); font-size:13px; line-height:1.5; margin:8px 2px}
+  .toast{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:var(--good); color:#04231a;
+    padding:12px 18px; border-radius:12px; font-weight:700; font-size:14px; opacity:0; transition:opacity .3s; pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.4)}
+  .toast.show{opacity:1}
+  h3{margin:18px 2px 6px; font-size:15px}
+</style>
+</head>
+<body>
+<header>
+  <button id="refresh" class="refreshbtn" aria-label="Update to latest version">⟳</button>
+  <button id="theme" class="themebtn" aria-label="Toggle light/dark">🌙</button>
+  <h1>🗽 Mi Inglés Boricua</h1>
+  <div class="sub" id="deckcount">0 tarjetas</div>
+</header>
+<nav>
+  <button data-view="study" class="active">Estudiar</button>
+  <button data-view="browse">Explorar</button>
+  <button data-view="add">Añadir</button>
+  <button data-view="export">Exportar</button>
+</nav>
+<div class="filters" id="filters"></div>
+<main>
+  <!-- STUDY -->
+  <section id="study" class="view active">
+    <div class="counter" id="counter">–</div>
+    <div class="flip" id="flip">
+      <div class="flip-inner">
+        <div class="face front"><div class="term" id="frontTxt">–</div><div class="hint">toca para voltear</div></div>
+        <div class="face back" id="backFace">
+          <div class="def" id="backTxt"></div>
+          <button class="exbtn" id="exBtn">Ver ejemplo</button>
+          <div class="ex" id="ex"></div>
+        </div>
+      </div>
+    </div>
+    <div class="controls">
+      <button id="prev">‹ Atrás</button>
+      <button id="flipBtn" class="primary">Voltear</button>
+      <button id="next">Siguiente ›</button>
+    </div>
+    <div class="toolbar">
+      <button id="shuffle">🔀 Barajar</button>
+      <button id="reset">↺ En orden</button>
+    </div>
+    <div class="toolbar">
+      <button id="dir">Frente: Español</button>
+    </div>
+  </section>
+
+  <!-- BROWSE -->
+  <section id="browse" class="view">
+    <div class="browsebar">
+      <input class="search" id="search" placeholder="Buscar…">
+      <button id="revealToggle">Mostrar todo</button>
+    </div>
+    <div class="note" style="margin:0 2px 10px">Toca una tarjeta para ver el inglés · toca "ejemplo" para ver la oración.</div>
+    <div id="list"></div>
+  </section>
+
+  <!-- ADD -->
+  <section id="add" class="view">
+    <div class="note">Pega un bloque que te dio Claude (una tarjeta por línea: <b>palabra</b>, luego un tab, luego el significado). Se une a tu mazo y se guarda en este teléfono. Las repetidas se omiten.</div>
+    <textarea id="addbox" placeholder="guagua&#9;Bus. Ej: &quot;Cogí la guagua.&quot; — I took the bus."></textarea>
+    <button class="btn go" id="addBtn">➕ Añadir tarjetas</button>
+    <div class="note" id="addresult"></div>
+  </section>
+
+  <!-- EXPORT -->
+  <section id="export" class="view">
+    <h3>Importar a Quizlet (Tab / Nueva línea)</h3>
+    <div class="note">Copia esto y pégalo en Quizlet → Create → Import cuando estés en una computadora.</div>
+    <textarea id="quizout" readonly></textarea>
+    <button class="btn alt" id="copyQuiz">📋 Copiar texto de Quizlet</button>
+    <h3>Copia de seguridad (envíasela a Claude para reconstruir)</h3>
+    <textarea id="jsonout" readonly style="min-height:110px"></textarea>
+    <button class="btn alt" id="copyJson">📋 Copiar copia</button>
+  </section>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+// ---- Seed deck (your cards so far). def uses "text ||| example" so we can style the example. ----
+const SEED = [
+  ["¿Puedo usar...?", "Can I use...?", "¿Puedo usar la compu aquí? — Can I use the computer here?"],
+  ["la compu", "The computer (casual, short for computadora).", "Préstame la compu un momento. — Lend me the computer for a second."],
+  ["aquí", "Here.", "Ven acá, siéntate aquí. — Come here, sit here."],
+  ["pa'", "Casual shortening of 'para' (for / to).", "Esto es pa' ti. — This is for you."],
+  ["meterme a Quizlet", "To get on / go into Quizlet (more natural than 'conectarme a').", "Déjame meterme a Quizlet. — Let me get on Quizlet."],
+  ["pasar (a flashcards)", "To move / transfer something into cards.", "Voy a pasar las palabras a flashcards. — I'm going to move the words into flashcards."],
+  ["todas las palabras y frases que aprendo", "All the words and phrases I learn.", "Guardo todas las palabras y frases que aprendo. — I save all the words and phrases I learn."],
+  ["mete mano", "Go ahead / dig in / get to it (PR slang).", "Sí, mete mano. — Yeah, go ahead."],
+  ["duro", "Awesome / great (PR slang).", "Duro, gracias. — Awesome, thanks."],
+  ["dale", "Go for it / okay / sure.", "Sí, dale. — Yeah, go for it."],
+  ["mira", "Hey / look (to get someone's attention).", "Mira, ven acá un momentito. — Hey, come here for a sec."],
+  ["un momentito", "Just a moment / a quick sec.", "Espérame un momentito. — Wait for me just a moment."],
+  ["¿Puedo usar la compu aquí pa' meterme a Quizlet y pasar todas las palabras y frases que aprendo a flashcards?", "Can I use the computer here to get on Quizlet and move all the words and phrases I learn into flashcards? (full local phrasing)", ""],
+  ["guagua", "Bus.", "Cogí la guagua pa'l trabajo. — I took the bus to work."],
+  ["chavos", "Money.", "No tengo chavos pa' salir hoy. — I don't have money to go out today."],
+  ["bregar", "To deal with / handle something.", "Tengo que bregar con esto ahora. — I have to deal with this now."],
+  ["zafacón", "Trash can.", "Tira eso en el zafacón. — Throw that in the trash can."],
+  ["pana", "Buddy / close friend.", "Ese es mi pana del alma. — That's my best buddy."],
+  ["chévere", "Cool / great.", "El party estuvo bien chévere. — The party was really cool."],
+  ["revolú", "A mess / chaos.", "Qué revolú hay en la cocina. — What a mess there is in the kitchen."],
+  ["al garete", "Aimless / out of control.", "Todo está al garete hoy. — Everything is out of control today."],
+  ["janguear", "To hang out.", "Vamos a janguear esta noche. — Let's hang out tonight."],
+  ["carro", "Car.", "Voy pa'l carro. — I'm going to the car."],
+  ["chancletas", "Flip-flops / sandals.", "Mis chancletas están en la cajuela. — My flip-flops are in the trunk."],
+  ["cajuela", "Trunk of the car (common in the Caribbean).", "Dejé las chancletas en la cajuela. — I left the flip-flops in the trunk."],
+  ["pa'l", "Contraction of 'para el' (to the).", "Voy pa'l carro. — I'm going to the car."],
+  ["porque", "Because.", "Voy pa'l carro porque olvidé las llaves. — I'm going to the car because I forgot the keys."],
+  ["las llaves", "The keys.", "¿Cogiste las llaves? — Did you grab the keys?"],
+  ["¿Adónde vas?", "Where are you going?", "¿Adónde vas tan rápido? — Where are you going so fast?"],
+  ["Voy pa'l carro porque mis chancletas están en la cajuela.", "I'm going to the car because my flip-flops are in the trunk. (full local phrasing)", ""],
+  ["siéntate", "Sit down (informal command).", "Siéntate con tu hermana. — Sit with your sister."],
+  ["con", "With.", "Ven con nosotros. — Come with us."],
+  ["tu", "Your (informal).", "¿Dónde está tu hermana? — Where is your sister?"],
+  ["hermana", "Sister.", "Siéntate con tu hermana. — Sit with your sister."],
+  ["ya voy", "I'm coming / on my way.", "Ok, ya voy. — Okay, I'm coming."],
+  ["ven pa'cá", "Come here (pa'cá = para acá).", "Ven pa'cá un momento. — Come here for a second."],
+  ["un rato", "A while / a bit.", "Siéntate un rato. — Sit for a bit."],
+  ["pégate (a)", "Stick close / sit near (casual, local).", "Pégate a tu hermana. — Stick close to your sister."],
+  ["ahora mismo", "Right now.", "Dale, ahora mismo. — Okay, right now."],
+  ["Siéntate con tu hermana.", "Sit with your sister. (full phrase)", ""],
+  ["nos vamos", "We're going / are we going (asking about plans).", "¿Nos vamos en taxi? — Are we taking a taxi?"],
+  ["taxi", "Taxi.", "Nos vamos en taxi. — We're going by taxi."],
+  ["en (transporte)", "By / in — used for transportation.", "Vamos en guagua. — We're going by bus."],
+  ["o", "Or.", "¿Taxi o guagua? — Taxi or bus?"],
+  ["más barato", "Cheaper.", "En guagua sale más barato. — By bus it's cheaper."],
+  ["pa' allá", "Over there (para allá).", "¿Nos vamos pa' allá? — Are we heading over there?"],
+  ["vamos tarde", "We're running late.", "En taxi, porque vamos tarde. — Taxi, because we're running late."],
+  ["tarde", "Late.", "Se está haciendo tarde. — It's getting late."],
+  ["¿Nos vamos en taxi o en guagua?", "Are we taking a taxi or a bus? (full phrase)", ""],
+  ["¿Te sientes mejor?", "Are you feeling better? (informal, tú).", "¿Te sientes mejor hoy? — Are you feeling better today?"],
+  ["¿Se siente mejor?", "Are you feeling better? (formal, usted).", "¿Se siente mejor, doña María? — Are you feeling better, Mrs. María?"],
+  ["sentirse", "To feel (a certain way).", "Me siento cansado. — I feel tired."],
+  ["mejor", "Better.", "Ya estoy mejor. — I'm better now."],
+  ["la gripe", "The flu.", "¿Te dio la gripe? — Did you catch the flu?"],
+  ["la fiebre", "The fever.", "Ya bajó la fiebre. — The fever went down already."],
+  ["qué bueno", "That's good / great.", "Ah, qué bueno. — Oh, that's great."],
+  ["ayer", "Yesterday.", "Estuviste bien malo ayer. — You were really sick yesterday."],
+  ["bien (intensifier)", "Really / very (casual intensifier).", "Estuviste bien malo ayer. — You were really sick yesterday."],
+  ["ya me siento mejor", "I already feel better.", "Sí, ya me siento mejor. — Yeah, I already feel better."]
+];
+
+const VERSION = "v1";
+const KEY = "pr_ingles_deck_v1";
+const SEEDKEY = "pr_ingles_seed_keys";
+let deck = load();
+let order = [];
+let pos = 0;
+let flipped = false;
+let catFilter = "all";
+let showAll = false;
+let dirMode = "es"; try{ dirMode = localStorage.getItem("pr_ingles_dir") || "es"; }catch(e){}
+
+function load(){
+  const seeded = SEED.map(s => ({term:s[0], def:s[1], ex:s[2]||""}));
+  const seedKeys = SEED.map(s => s[0].trim().toLowerCase());
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(KEY)); } catch(e){}
+  if(!(saved && Array.isArray(saved) && saved.length)){
+    // first ever run — start from the full baked-in set
+    save(seeded);
+    try { localStorage.setItem(SEEDKEY, JSON.stringify(seedKeys)); } catch(e){}
+    return seeded;
+  }
+  // merge in any NEW baked-in cards (never seen before AND not already saved)
+  let known=[];
+  try { known = JSON.parse(localStorage.getItem(SEEDKEY)) || []; } catch(e){}
+  const knownSet = new Set(known);
+  const haveSet = new Set(saved.map(c => c.term.trim().toLowerCase()));
+  let addedNew = 0;
+  seeded.forEach((c,i) => {
+    const k = seedKeys[i];
+    if(!knownSet.has(k) && !haveSet.has(k)){ saved.push(c); haveSet.add(k); addedNew++; }
+  });
+  try { localStorage.setItem(SEEDKEY, JSON.stringify(seedKeys)); } catch(e){} // remember all current seeds
+  if(addedNew) save(saved);
+  return saved;
+}
+function save(d){
+  try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e){}
+}
+function keyOf(t){ return t.trim().toLowerCase(); }
+
+// ---- Categories: word / phrase / sentence ----
+const CATLABEL={all:"Todo", word:"Palabras", phrase:"Frases", sentence:"Oraciones"};
+function categorize(term){
+  const t=term.trim();
+  const endsSentence = /[.!?]$/.test(t) || /^[¿¡]/.test(t);
+  const core=t.replace(/\([^)]*\)/g,"").trim();          // drop parentheticals
+  const wordsAll=core.split(/\s+/).filter(Boolean);
+  let toks=wordsAll.slice();
+  if(toks.length>1 && /^(el|la|los|las|un|una)$/i.test(toks[0])) toks=toks.slice(1); // ignore a leading article
+  if(endsSentence && wordsAll.length>=3) return "sentence";
+  if(toks.length<=1) return "word";
+  return "phrase";
+}
+function ensureCats(d){ d.forEach(c=>{ if(!c.cat) c.cat=categorize(c.term); }); }
+function renderFilters(){
+  const counts={all:deck.length, word:0, phrase:0, sentence:0};
+  deck.forEach(c=>{ counts[c.cat]=(counts[c.cat]||0)+1; });
+  const f=document.getElementById("filters"); f.innerHTML="";
+  ["all","word","phrase","sentence"].forEach(k=>{
+    const b=document.createElement("button");
+    b.textContent=CATLABEL[k]+" "+(counts[k]||0);
+    if(k===catFilter) b.classList.add("on");
+    b.addEventListener("click",()=>{
+      catFilter=k; renderFilters(); buildOrder(false);
+      if(document.getElementById("browse").classList.contains("active")) renderList(document.getElementById("search").value);
+    });
+    f.appendChild(b);
+  });
+}
+
+// ---- Study ----
+function buildOrder(shuffle){
+  order = deck.map((_,i)=>i).filter(i => catFilter==="all" || deck[i].cat===catFilter);
+  if(shuffle){ for(let i=order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [order[i],order[j]]=[order[j],order[i]]; } }
+  pos = 0; flipped=false; render();
+}
+const DIRLABEL={es:"Frente: Español", en:"Frente: Inglés", mix:"Frente: Mixto"};
+function frontIsEnglish(i){ if(dirMode==="en") return true; if(dirMode==="es") return false; return (i%2)===1; }
+function render(){
+  document.getElementById("deckcount").textContent = deck.length + " tarjetas · " + VERSION;
+  const flip=document.getElementById("flip"); flipped=false; flip.classList.remove("flipped");
+  document.getElementById("backFace").classList.remove("show");
+  const ft=document.getElementById("frontTxt"), bt=document.getElementById("backTxt"), ex=document.getElementById("ex");
+  if(!order.length){
+    ft.textContent = deck.length ? ("No hay "+(catFilter==="all"?"tarjetas":CATLABEL[catFilter].toLowerCase())+" aquí") : "No hay tarjetas todavía — ¡añade algunas!";
+    ft.classList.remove("small");
+    document.getElementById("counter").textContent="0 / 0";
+    bt.textContent=""; ex.textContent=""; document.getElementById("exBtn").style.display="none";
+    return;
+  }
+  const idx=order[pos], c=deck[idx], fe=frontIsEnglish(idx);
+  const frontText = fe ? c.def : c.term;
+  const backText  = fe ? c.term : c.def;
+  ft.textContent=frontText; ft.classList.toggle("small", frontText.length>28);
+  bt.textContent=backText;
+  ex.textContent = c.ex ? "Ej: "+c.ex : "";
+  document.getElementById("exBtn").style.display = c.ex ? "" : "none";
+  document.getElementById("counter").textContent=(pos+1)+" / "+order.length;
+}
+function doFlip(){ flipped=!flipped; document.getElementById("flip").classList.toggle("flipped", flipped); }
+function step(n){ if(!deck.length) return; pos=(pos+n+order.length)%order.length; render(); }
+
+document.getElementById("flip").addEventListener("click", doFlip);
+document.getElementById("flipBtn").addEventListener("click", doFlip);
+document.getElementById("next").addEventListener("click", ()=>step(1));
+document.getElementById("prev").addEventListener("click", ()=>step(-1));
+document.getElementById("shuffle").addEventListener("click", ()=>buildOrder(true));
+document.getElementById("reset").addEventListener("click", ()=>buildOrder(false));
+document.getElementById("exBtn").addEventListener("click", (e)=>{ e.stopPropagation(); document.getElementById("backFace").classList.add("show"); });
+(function(){ const d=document.getElementById("dir"); d.textContent=DIRLABEL[dirMode];
+  d.addEventListener("click", ()=>{ dirMode = dirMode==="es"?"en":(dirMode==="en"?"mix":"es"); try{localStorage.setItem("pr_ingles_dir",dirMode);}catch(e){} d.textContent=DIRLABEL[dirMode]; buildOrder(false); });
+})();
+
+// ---- Nav ----
+document.querySelectorAll("nav button").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    const v = b.dataset.view;
+    document.getElementById(v).classList.add("active");
+    if(v==="browse") renderList();
+    if(v==="export") renderExport();
+  });
+});
+
+// ---- Browse ----
+function renderList(filter){
+  const list = document.getElementById("list");
+  const q = (filter||"").trim().toLowerCase();
+  list.innerHTML="";
+  deck.forEach((c,i)=>{
+    if(catFilter!=="all" && c.cat!==catFilter) return;
+    if(q && !(c.term.toLowerCase().includes(q) || c.def.toLowerCase().includes(q))) return;
+    const div = document.createElement("div");
+    div.className = "row" + (showAll ? " revealed" : "");
+    div.innerHTML =
+      '<button class="del">borrar</button>'+
+      '<span class="tag"></span>'+
+      '<div class="t"></div>'+
+      '<div class="d"></div>'+
+      (c.ex ? '<button class="exlink">ejemplo</button>' : '')+
+      '<div class="ex2"></div>';
+    div.querySelector(".tag").textContent = ({word:"palabra",phrase:"frase",sentence:"oración"})[c.cat] || c.cat || "";
+    div.querySelector(".t").textContent = c.term;
+    div.querySelector(".d").textContent = c.def;
+    if(c.ex) div.querySelector(".ex2").textContent = "Ej: "+c.ex;
+    div.addEventListener("click", ()=> div.classList.toggle("revealed"));
+    const exl=div.querySelector(".exlink");
+    if(exl) exl.addEventListener("click",(e)=>{ e.stopPropagation(); div.classList.toggle("show-ex"); });
+    div.querySelector(".del").addEventListener("click",(e)=>{
+      e.stopPropagation(); deck.splice(i,1); save(deck); renderFilters(); buildOrder(false); renderList(document.getElementById("search").value); toast("Borrada");
+    });
+    list.appendChild(div);
+  });
+}
+document.getElementById("search").addEventListener("input", e=>renderList(e.target.value));
+document.getElementById("revealToggle").addEventListener("click", ()=>{
+  showAll=!showAll;
+  document.getElementById("revealToggle").textContent = showAll ? "Ocultar todo" : "Mostrar todo";
+  renderList(document.getElementById("search").value);
+});
+
+// ---- Add (parse a pasted block) ----
+function parseBlock(text){
+  const out=[];
+  text.split(/\r?\n/).forEach(line=>{
+    if(!line.trim()) return;
+    let term, rest;
+    if(line.includes("\t")){ const p=line.split("\t"); term=p[0]; rest=p.slice(1).join(" ").trim(); }
+    else { // fallback: split on first " — " or first "  " if no tab
+      const m = line.split(/\s—\s|\s{2,}/); term=m[0]; rest=m.slice(1).join(" ").trim();
+    }
+    if(!term || !rest) return;
+    // pull example: look for "Ej:" or "Ex:" marker
+    let def=rest, ex="";
+    const em = rest.match(/E[jx]:\s*(.*)$/i);
+    if(em){ ex = em[1].trim(); def = rest.slice(0, em.index).trim().replace(/[.\s]*$/,'').trim(); if(!def) def=rest; }
+    out.push({term:term.trim(), def:def.trim(), ex:ex});
+  });
+  return out;
+}
+document.getElementById("addBtn").addEventListener("click", ()=>{
+  const txt = document.getElementById("addbox").value;
+  const parsed = parseBlock(txt);
+  if(!parsed.length){ document.getElementById("addresult").textContent="No pude leer ninguna tarjeta — asegúrate de que cada línea tenga una palabra, un tab y luego el significado."; return; }
+  const existing = new Set(deck.map(c=>keyOf(c.term)));
+  let added=0, dupes=0;
+  parsed.forEach(c=>{ if(existing.has(keyOf(c.term))){ dupes++; } else { deck.push(c); existing.add(keyOf(c.term)); added++; } });
+  ensureCats(deck);
+  save(deck);
+  document.getElementById("addbox").value="";
+  document.getElementById("addresult").textContent = "Añadida"+(added===1?"":"s")+" "+added+" tarjeta"+(added===1?"":"s")+(dupes?(" · "+dupes+" repetida"+(dupes===1?"":"s")+" omitida"+(dupes===1?"":"s")):"")+". Ahora tienes "+deck.length+".";
+  renderFilters();
+  buildOrder(false);
+  toast("Añadidas "+added+" tarjetas");
+});
+
+// ---- Export ----
+function renderExport(){
+  document.getElementById("quizout").value = deck.map(c=>{
+    let d=c.def;
+    if(c.ex){
+      const parts=c.ex.split(" — ");
+      const sent=parts[0].trim().replace(/^"|"$/g,"").trim();
+      const tr=(parts[1]||"").trim();
+      const close=/[.!?]$/.test(sent) ? '"' : '."';
+      d += ' Ej: "'+sent+close+(tr?" — "+tr:"");
+    }
+    return c.term+"\t"+d.replace(/\t/g," ");
+  }).join("\n");
+  document.getElementById("jsonout").value = JSON.stringify(deck);
+}
+function copy(id,label){
+  const el=document.getElementById(id); el.select(); el.setSelectionRange(0,999999);
+  try{ document.execCommand("copy"); }catch(e){}
+  if(navigator.clipboard){ navigator.clipboard.writeText(el.value).catch(()=>{}); }
+  toast(label+" copiado");
+}
+document.getElementById("copyQuiz").addEventListener("click", ()=>copy("quizout","Texto de Quizlet"));
+document.getElementById("copyJson").addEventListener("click", ()=>copy("jsonout","Copia"));
+
+// ---- Toast ----
+let toastTimer;
+function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove("show"),1600); }
+
+// ---- Update / hard refresh (fetch newest from network, keep saved cards) ----
+document.getElementById("refresh").addEventListener("click", ()=>{
+  toast("Cargando lo último…");
+  const base = location.href.split("?")[0];
+  setTimeout(()=>{ location.replace(base + "?v=" + Date.now()); }, 250);
+});
+
+// ---- Theme ----
+const TKEY="pr_ingles_theme";
+function applyTheme(t){
+  document.body.classList.toggle("light", t==="light");
+  document.getElementById("theme").textContent = t==="light" ? "☀️" : "🌙";
+  const mc=document.querySelector('meta[name="theme-color"]'); if(mc) mc.setAttribute("content", t==="light" ? "#eef2fb" : "#0b1020");
+  try{ localStorage.setItem(TKEY,t); }catch(e){}
+}
+let curTheme="dark"; try{ curTheme=localStorage.getItem(TKEY)||"dark"; }catch(e){}
+applyTheme(curTheme);
+document.getElementById("theme").addEventListener("click", ()=>{
+  applyTheme(document.body.classList.contains("light") ? "dark" : "light");
+});
+
+// ---- Go ----
+ensureCats(deck);
+renderFilters();
+buildOrder(false);
+</script>
+</body>
+</html>
