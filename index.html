@@ -360,10 +360,21 @@ const SEED = [
   ["gracias", "Thanks / thank you.", "Gracias, mi pana. — Thanks, buddy."],
   ["déjame ver", "Let me see.", "Espera, déjame ver. — Wait, let me see."],
   ["espera", "Wait (command).", "Espera un momento. — Wait a moment."],
-  ["Tienes algo pegado en el zapato izquierdo.", "You have something stuck on your left shoe. (full sentence)", ""]
+  ["Tienes algo pegado en el zapato izquierdo.", "You have something stuck on your left shoe. (full sentence)", ""],
+  ["él", "He.", "Él está en la tienda. — He's in the store."],
+  ["estar", "To be (location / state).", "¿Dónde está él? — Where is he?"],
+  ["la tienda", "The store / shop.", "Está en la tienda. — He's in the store."],
+  ["comprar", "To buy.", "Está comprando hielo. — He's buying ice."],
+  ["el hielo", "Ice.", "Está comprando hielo. — He's buying ice."],
+  ["tardar", "To take a while / be long.", "¿Va a tardar mucho? — Is it going to take long?"],
+  ["mucho", "A lot / much.", "No tardó mucho. — It didn't take long."],
+  ["volver", "To return / come back.", "Vuelve ahora. — He's coming right back."],
+  ["ahora", "Now.", "Vuelve ahora. — He's coming back now."],
+  ["¿Va a tardar mucho?", "Is it going to take long?", "¿Va a tardar mucho? — Is it going to take long?"],
+  ["Él está en la tienda comprando hielo.", "He's at the store buying ice. (full sentence)", ""]
 ];
 
-const VERSION = "v13";
+const VERSION = "v14";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -441,13 +452,13 @@ function renderFilters(){
 
 // ---- Parte de la oración (verbo / sustantivo / adjetivo / …) ----
 const POSGROUPS = {
-  verb:["meterme a quizlet","pasar (a flashcards)","bregar","janguear","siéntate","pégate (a)","sentirse","salpicar","nadar","tirar agua","parquear","llegar","vamos","tener","espérame","agarrar","traer","mamar","decir","hablar feo","ponerse a","dile","dormir","vete a dormir","duérmete","vete","acostarse","había","tomar","pedir","hay","volar","molestar","quedarse","pegarse","espera"],
-  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad"],
+  verb:["meterme a quizlet","pasar (a flashcards)","bregar","janguear","siéntate","pégate (a)","sentirse","salpicar","nadar","tirar agua","parquear","llegar","vamos","tener","espérame","agarrar","traer","mamar","decir","hablar feo","ponerse a","dile","dormir","vete a dormir","duérmete","vete","acostarse","había","tomar","pedir","hay","volar","molestar","quedarse","pegarse","espera","estar","comprar","tardar","volver"],
+  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad","la tienda","el hielo"],
   adj:["duro","chévere","más barato","mejor","otro","dos","rico","brutal","asqueroso","sucio","nasty","malo","fatal","pegado","izquierdo","derecho"],
-  adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro"],
+  adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro","mucho","ahora"],
   prep:["pa'","pa'l","con","en (transporte)"],
   conj:["porque","o","mientras","so"],
-  pron:["tu","algo"],
+  pron:["tu","algo","él"],
   expr:["dale","mira","oye","gracias"]
 };
 const POSMAP = {};
