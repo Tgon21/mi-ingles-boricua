@@ -56,6 +56,7 @@
   .fsel select{flex:1; min-width:0; background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:10px; padding:9px 26px 9px 10px; font-size:13px; font-weight:600; appearance:none; -webkit-appearance:none;
     background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
     background-position:calc(100% - 15px) 53%,calc(100% - 10px) 53%; background-size:5px 5px,5px 5px; background-repeat:no-repeat}
+  .clearbtn{flex:0 0 auto; align-self:flex-end; background:transparent; border:1px solid var(--line); color:var(--muted); border-radius:10px; padding:10px 14px; font-size:12px; font-weight:700}
   main{flex:1; padding:10px 16px 30px; max-width:640px; margin:0 auto; width:100%}
   .view{display:none}
   .view.active{display:block}
@@ -136,6 +137,7 @@
   <label class="fsel">Tipo <select id="catsel" aria-label="Filtrar por tipo"></select></label>
   <label class="fsel">Clase <select id="possel" aria-label="Filtrar por clase de palabra"></select></label>
   <label class="fsel">Tema <select id="topicsel" aria-label="Filtrar por tema"></select></label>
+  <button id="clearfilters" class="clearbtn" style="display:none">✕ Limpiar</button>
 </div>
 <main>
   <!-- STUDY -->
@@ -375,7 +377,7 @@ const SEED = [
   ["Él está en la tienda comprando hielo.", "He's at the store buying ice. (full sentence)", ""]
 ];
 
-const VERSION = "v15";
+const VERSION = "v16";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -440,13 +442,20 @@ function categorize(term){
   return "phrase";
 }
 function ensureCats(d){ d.forEach(c=>{ if(!c.cat) c.cat=categorize(c.term); }); }
+// count a card toward a facet only if it passes the OTHER two facets (live faceted counts)
+function matchesExcept(c, ex){
+  if(ex!=="cat" && catFilter!=="all" && c.cat!==catFilter) return false;
+  if(ex!=="pos" && posFilter!=="all" && c.pos!==posFilter) return false;
+  if(ex!=="topic" && topicFilter!=="all" && !(c.themes&&c.themes.includes(topicFilter))) return false;
+  return true;
+}
 function renderFilters(){
-  const counts={all:deck.length, word:0, phrase:0, sentence:0};
-  deck.forEach(c=>{ counts[c.cat]=(counts[c.cat]||0)+1; });
   const sel=document.getElementById("catsel"); sel.innerHTML="";
   ["all","word","phrase","sentence"].forEach(k=>{
+    const n=deck.filter(c=> matchesExcept(c,"cat") && (k==="all"||c.cat===k)).length;
+    if(k!=="all" && n===0 && k!==catFilter) return;
     const o=document.createElement("option"); o.value=k;
-    o.textContent=CATLABEL[k]+" ("+(counts[k]||0)+")";
+    o.textContent=CATLABEL[k]+" ("+n+")";
     if(k===catFilter) o.selected=true;
     sel.appendChild(o);
   });
@@ -479,13 +488,12 @@ function guessPos(term,def){
 }
 function ensurePos(d){ d.forEach(c=>{ const k=c.term.trim().toLowerCase(); c.pos = POSMAP[k] || c.pos || guessPos(c.term,c.def); }); }
 function renderPos(){
-  const counts={all:deck.length};
-  deck.forEach(c=>{ counts[c.pos]=(counts[c.pos]||0)+1; });
   const sel=document.getElementById("possel"); sel.innerHTML="";
   POSORDER.forEach(k=>{
-    if(k!=="all" && !counts[k]) return;
+    const n=deck.filter(c=> matchesExcept(c,"pos") && (k==="all"||c.pos===k)).length;
+    if(k!=="all" && n===0 && k!==posFilter) return;
     const o=document.createElement("option"); o.value=k;
-    o.textContent=POSLABEL[k]+" ("+(counts[k]||0)+")";
+    o.textContent=POSLABEL[k]+" ("+n+")";
     if(k===posFilter) o.selected=true;
     sel.appendChild(o);
   });
@@ -512,16 +520,22 @@ const THEMELABEL={all:"Todos", family:"Familia", home:"Casa", bathroom:"Baño", 
 const THEMEORDER=["all","family","home","bathroom","food","beach","transport","shopping","health","social","time","place","slang","general"];
 function ensureThemes(d){ d.forEach(c=>{ const k=c.term.trim().toLowerCase(); c.themes = THEMES[k] ? THEMES[k].slice() : ["general"]; }); }
 function renderTopic(){
-  const counts={all:deck.length};
-  deck.forEach(c=>{ (c.themes||["general"]).forEach(t=>{ counts[t]=(counts[t]||0)+1; }); });
   const sel=document.getElementById("topicsel"); sel.innerHTML="";
   THEMEORDER.forEach(k=>{
-    if(k!=="all" && !counts[k]) return;
+    const n=deck.filter(c=> matchesExcept(c,"topic") && (k==="all"||(c.themes&&c.themes.includes(k)))).length;
+    if(k!=="all" && n===0 && k!==topicFilter) return;
     const o=document.createElement("option"); o.value=k;
-    o.textContent=THEMELABEL[k]+" ("+(counts[k]||0)+")";
+    o.textContent=THEMELABEL[k]+" ("+n+")";
     if(k===topicFilter) o.selected=true;
     sel.appendChild(o);
   });
+}
+function applyFilters(){
+  renderFilters(); renderPos(); renderTopic();
+  const cb=document.getElementById("clearfilters");
+  if(cb) cb.style.display = (catFilter==="all"&&posFilter==="all"&&topicFilter==="all") ? "none" : "";
+  buildOrder(false);
+  if(document.getElementById("browse").classList.contains("active")) renderList(document.getElementById("search").value);
 }
 
 // ---- Study ----
@@ -607,15 +621,16 @@ function renderList(filter){
     const exl=div.querySelector(".exlink");
     if(exl) exl.addEventListener("click",(e)=>{ e.stopPropagation(); div.classList.toggle("show-ex"); });
     div.querySelector(".del").addEventListener("click",(e)=>{
-      e.stopPropagation(); deck.splice(i,1); save(deck); renderFilters(); renderPos(); renderTopic(); buildOrder(false); renderList(document.getElementById("search").value); toast("Borrada");
+      e.stopPropagation(); deck.splice(i,1); save(deck); applyFilters(); toast("Borrada");
     });
     list.appendChild(div);
   });
 }
 document.getElementById("search").addEventListener("input", e=>renderList(e.target.value));
-document.getElementById("catsel").addEventListener("change", e=>{ catFilter=e.target.value; buildOrder(false); if(document.getElementById("browse").classList.contains("active")) renderList(document.getElementById("search").value); });
-document.getElementById("possel").addEventListener("change", e=>{ posFilter=e.target.value; buildOrder(false); if(document.getElementById("browse").classList.contains("active")) renderList(document.getElementById("search").value); });
-document.getElementById("topicsel").addEventListener("change", e=>{ topicFilter=e.target.value; buildOrder(false); if(document.getElementById("browse").classList.contains("active")) renderList(document.getElementById("search").value); });
+document.getElementById("catsel").addEventListener("change", e=>{ catFilter=e.target.value; applyFilters(); });
+document.getElementById("possel").addEventListener("change", e=>{ posFilter=e.target.value; applyFilters(); });
+document.getElementById("topicsel").addEventListener("change", e=>{ topicFilter=e.target.value; applyFilters(); });
+document.getElementById("clearfilters").addEventListener("click", ()=>{ catFilter="all"; posFilter="all"; topicFilter="all"; applyFilters(); });
 document.getElementById("revealToggle").addEventListener("click", ()=>{
   showAll=!showAll;
   document.getElementById("revealToggle").textContent = showAll ? "Ocultar todo" : "Mostrar todo";
@@ -654,10 +669,7 @@ document.getElementById("addBtn").addEventListener("click", ()=>{
   save(deck);
   document.getElementById("addbox").value="";
   document.getElementById("addresult").textContent = "Añadida"+(added===1?"":"s")+" "+added+" tarjeta"+(added===1?"":"s")+(dupes?(" · "+dupes+" repetida"+(dupes===1?"":"s")+" omitida"+(dupes===1?"":"s")):"")+". Ahora tienes "+deck.length+".";
-  renderFilters();
-  renderPos();
-  renderTopic();
-  buildOrder(false);
+  applyFilters();
   toast("Añadidas "+added+" tarjetas");
 });
 
@@ -714,10 +726,7 @@ document.getElementById("theme").addEventListener("click", ()=>{
 ensureCats(deck);
 ensurePos(deck);
 ensureThemes(deck);
-renderFilters();
-renderPos();
-renderTopic();
-buildOrder(false);
+applyFilters();
 </script>
 </body>
 </html>
