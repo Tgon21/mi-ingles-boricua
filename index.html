@@ -317,10 +317,22 @@ const SEED = [
   ["pedir", "To order / to ask for.", "Mejor pido otro. — I'd better order another."],
   ["otro", "Another / another one.", "Pídeme otro. — Get me another."],
   ["Había una abeja en tu drink.", "There was a bee in your drink. (full sentence)", ""],
-  ["Se me metió una abeja en el drink.", "A bee got into my drink (unexpectedly). (casual full sentence)", ""]
+  ["Se me metió una abeja en el drink.", "A bee got into my drink (unexpectedly). (casual full sentence)", ""],
+  ["hay", "There is / there are.", "Hay dos abejas por ahí. — There are two bees around."],
+  ["dos", "Two.", "Hay dos abejas. — There are two bees."],
+  ["volar", "To fly.", "Las abejas están volando. — The bees are flying."],
+  ["por ahí", "Around / out there / nearby.", "Andan volando por ahí. — They're flying around out there."],
+  ["so", "Casual filler: 'so / so then' (PR Spanglish).", "Hay abejas, so nos fuimos. — There are bees, so we left."],
+  ["nos vinimos", "We came (over) here.", "Nos vinimos pa' acá. — We came over here."],
+  ["pa' acá", "Over here (para acá).", "Ven pa' acá. — Come over here."],
+  ["afuera", "Outside.", "Están allá afuera. — They're out there / outside."],
+  ["¿Por qué?", "Why?", "¿Por qué están afuera? — Why are you all outside?"],
+  ["molestar", "To bother / annoy.", "Pa' no molestarlas. — So as not to bother them."],
+  ["quedarse", "To stay.", "Nos quedamos aquí. — We stayed here."],
+  ["Hay dos abejas volando por ahí, so nos vinimos pa' acá.", "There are two bees flying around, so we came over here. (full sentence)", ""]
 ];
 
-const VERSION = "v10";
+const VERSION = "v11";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -398,12 +410,12 @@ function renderFilters(){
 
 // ---- Parte de la oración (verbo / sustantivo / adjetivo / …) ----
 const POSGROUPS = {
-  verb:["meterme a quizlet","pasar (a flashcards)","bregar","janguear","siéntate","pégate (a)","sentirse","salpicar","nadar","tirar agua","parquear","llegar","vamos","tener","espérame","agarrar","traer","mamar","decir","hablar feo","ponerse a","dile","dormir","vete a dormir","duérmete","vete","acostarse","había","tomar","pedir"],
+  verb:["meterme a quizlet","pasar (a flashcards)","bregar","janguear","siéntate","pégate (a)","sentirse","salpicar","nadar","tirar agua","parquear","llegar","vamos","tener","espérame","agarrar","traer","mamar","decir","hablar feo","ponerse a","dile","dormir","vete a dormir","duérmete","vete","acostarse","había","tomar","pedir","hay","volar","molestar","quedarse"],
   noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco"],
-  adj:["duro","chévere","más barato","mejor","otro"],
-  adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía"],
+  adj:["duro","chévere","más barato","mejor","otro","dos"],
+  adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera"],
   prep:["pa'","pa'l","con","en (transporte)"],
-  conj:["porque","o","mientras"],
+  conj:["porque","o","mientras","so"],
   pron:["tu"]
 };
 const POSMAP = {};
