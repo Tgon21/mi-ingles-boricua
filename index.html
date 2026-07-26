@@ -106,6 +106,7 @@
   .row.show-ex .ex2{display:block}
   .row.show-ex .exlink{border-color:var(--accent2); color:var(--accent2)}
   .row .del{float:right; color:#ff8a8a; background:transparent; border:none; font-size:13px}
+  .row .sayrow{float:left; margin-right:10px; background:transparent; border:none; font-size:17px; color:var(--accent2); padding:0; line-height:1.2}
 
   /* Add / Export */
   textarea{width:100%; min-height:150px; padding:12px 14px; border-radius:12px; border:1px solid var(--line);
@@ -164,6 +165,7 @@
     </div>
     <div class="toolbar">
       <button id="dir">Frente: Español</button>
+      <button id="sayBtn">🔊 Escuchar</button>
     </div>
   </section>
 
@@ -386,7 +388,7 @@ const SEED = [
   ["Vamos al cementerio mañana.", "Let's go to the cemetery tomorrow. (full sentence)", ""]
 ];
 
-const VERSION = "v17";
+const VERSION = "v18";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -616,6 +618,7 @@ function renderList(filter){
     const div = document.createElement("div");
     div.className = "row" + (showAll ? " revealed" : "");
     div.innerHTML =
+      '<button class="sayrow" aria-label="Escuchar">🔊</button>'+
       '<button class="del">borrar</button>'+
       '<span class="tag"></span>'+
       '<div class="t"></div>'+
@@ -629,6 +632,7 @@ function renderList(filter){
     div.addEventListener("click", ()=> div.classList.toggle("revealed"));
     const exl=div.querySelector(".exlink");
     if(exl) exl.addEventListener("click",(e)=>{ e.stopPropagation(); div.classList.toggle("show-ex"); });
+    div.querySelector(".sayrow").addEventListener("click",(e)=>{ e.stopPropagation(); speak(c.term); });
     div.querySelector(".del").addEventListener("click",(e)=>{
       e.stopPropagation(); deck.splice(i,1); save(deck); applyFilters(); toast("Borrada");
     });
@@ -709,6 +713,29 @@ document.getElementById("copyJson").addEventListener("click", ()=>copy("jsonout"
 // ---- Toast ----
 let toastTimer;
 function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove("show"),1600); }
+
+// ---- Text-to-speech (device's built-in Spanish voice — free, no service) ----
+let spVoice=null;
+function pickVoice(){
+  if(!('speechSynthesis' in window)) return;
+  const vs=speechSynthesis.getVoices();
+  const pref=['es-pr','es-us','es-mx','es-419','es-co','es-ve','es-es'];
+  for(const p of pref){ const v=vs.find(v=>(v.lang||'').toLowerCase()===p); if(v){ spVoice=v; return; } }
+  const any=vs.find(v=>(v.lang||'').toLowerCase().startsWith('es')); if(any) spVoice=any;
+}
+pickVoice();
+if('speechSynthesis' in window){ speechSynthesis.onvoiceschanged=pickVoice; }
+function speak(text){
+  if(!text || !('speechSynthesis' in window)) return;
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    if(spVoice){ u.voice=spVoice; u.lang=spVoice.lang; } else { u.lang='es-US'; }
+    u.rate=0.92;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+document.getElementById("sayBtn").addEventListener("click", ()=>{ if(order.length) speak(deck[order[pos]].term); });
 
 // ---- Update / hard refresh (fetch newest from network, keep saved cards) ----
 document.getElementById("refresh").addEventListener("click", ()=>{
