@@ -51,6 +51,11 @@
   .filters button.on{background:var(--accent2); color:#03232a; border-color:var(--accent2)}
   .filters.pos{padding-top:0}
   .filters.pos button.on{background:var(--good); color:#04231a; border-color:var(--good)}
+  .filterbar{display:flex; gap:8px; padding:2px 12px 10px; max-width:640px; margin:0 auto}
+  .fsel{flex:1; min-width:0; display:flex; align-items:center; gap:6px; font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; font-weight:700}
+  .fsel select{flex:1; min-width:0; background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:10px; padding:9px 26px 9px 10px; font-size:13px; font-weight:600; appearance:none; -webkit-appearance:none;
+    background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+    background-position:calc(100% - 15px) 53%,calc(100% - 10px) 53%; background-size:5px 5px,5px 5px; background-repeat:no-repeat}
   main{flex:1; padding:10px 16px 30px; max-width:640px; margin:0 auto; width:100%}
   .view{display:none}
   .view.active{display:block}
@@ -127,8 +132,10 @@
   <button data-view="add">Añadir</button>
   <button data-view="export">Exportar</button>
 </nav>
-<div class="filters" id="filters"></div>
-<div class="filters pos" id="posfilters"></div>
+<div class="filterbar">
+  <label class="fsel">Tipo <select id="catsel" aria-label="Filtrar por tipo"></select></label>
+  <label class="fsel">Clase <select id="possel" aria-label="Filtrar por clase de palabra"></select></label>
+</div>
 <main>
   <!-- STUDY -->
   <section id="study" class="view active">
@@ -301,7 +308,7 @@ const SEED = [
   ["Ya es tarde.", "It's late already.", "Ya es tarde, duérmete. — It's late, go to sleep."]
 ];
 
-const VERSION = "v8";
+const VERSION = "v9";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -368,16 +375,12 @@ function ensureCats(d){ d.forEach(c=>{ if(!c.cat) c.cat=categorize(c.term); }); 
 function renderFilters(){
   const counts={all:deck.length, word:0, phrase:0, sentence:0};
   deck.forEach(c=>{ counts[c.cat]=(counts[c.cat]||0)+1; });
-  const f=document.getElementById("filters"); f.innerHTML="";
+  const sel=document.getElementById("catsel"); sel.innerHTML="";
   ["all","word","phrase","sentence"].forEach(k=>{
-    const b=document.createElement("button");
-    b.textContent=CATLABEL[k]+" "+(counts[k]||0);
-    if(k===catFilter) b.classList.add("on");
-    b.addEventListener("click",()=>{
-      catFilter=k; renderFilters(); buildOrder(false);
-      if(document.getElementById("browse").classList.contains("active")) renderList(document.getElementById("search").value);
-    });
-    f.appendChild(b);
+    const o=document.createElement("option"); o.value=k;
+    o.textContent=CATLABEL[k]+" ("+(counts[k]||0)+")";
+    if(k===catFilter) o.selected=true;
+    sel.appendChild(o);
   });
 }
 
@@ -409,17 +412,13 @@ function ensurePos(d){ d.forEach(c=>{ const k=c.term.trim().toLowerCase(); c.pos
 function renderPos(){
   const counts={all:deck.length};
   deck.forEach(c=>{ counts[c.pos]=(counts[c.pos]||0)+1; });
-  const f=document.getElementById("posfilters"); f.innerHTML="";
+  const sel=document.getElementById("possel"); sel.innerHTML="";
   POSORDER.forEach(k=>{
     if(k!=="all" && !counts[k]) return;
-    const b=document.createElement("button");
-    b.textContent=POSLABEL[k]+" "+(counts[k]||0);
-    if(k===posFilter) b.classList.add("on");
-    b.addEventListener("click",()=>{
-      posFilter=k; renderPos(); buildOrder(false);
-      if(document.getElementById("browse").classList.contains("active")) renderList(document.getElementById("search").value);
-    });
-    f.appendChild(b);
+    const o=document.createElement("option"); o.value=k;
+    o.textContent=POSLABEL[k]+" ("+(counts[k]||0)+")";
+    if(k===posFilter) o.selected=true;
+    sel.appendChild(o);
   });
 }
 
@@ -511,6 +510,8 @@ function renderList(filter){
   });
 }
 document.getElementById("search").addEventListener("input", e=>renderList(e.target.value));
+document.getElementById("catsel").addEventListener("change", e=>{ catFilter=e.target.value; buildOrder(false); if(document.getElementById("browse").classList.contains("active")) renderList(document.getElementById("search").value); });
+document.getElementById("possel").addEventListener("change", e=>{ posFilter=e.target.value; buildOrder(false); if(document.getElementById("browse").classList.contains("active")) renderList(document.getElementById("search").value); });
 document.getElementById("revealToggle").addEventListener("click", ()=>{
   showAll=!showAll;
   document.getElementById("revealToggle").textContent = showAll ? "Ocultar todo" : "Mostrar todo";
