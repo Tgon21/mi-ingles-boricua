@@ -347,10 +347,23 @@ const SEED = [
   ["fatal", "Terrible / awful.", "El local estaba fatal. — The place was awful."],
   ["¿Qué tal?", "How is it? / How was it?", "¿Qué tal el restaurante? — How was the restaurant?"],
   ["¿Te gustó?", "Did you like it?", "¿Te gustó la comida? — Did you like the food?"],
-  ["La comida estaba brutal, pero el sitio estaba bien sucio.", "The food was amazing, but the place was really dirty. (full sentence)", ""]
+  ["La comida estaba brutal, pero el sitio estaba bien sucio.", "The food was amazing, but the place was really dirty. (full sentence)", ""],
+  ["algo", "Something.", "Tienes algo pegado. — You have something stuck."],
+  ["pegado", "Stuck / attached.", "Algo pegado en el zapato. — Something stuck on the shoe."],
+  ["pegarse", "To stick / get stuck.", "Se te pegó algo. — Something got stuck on you."],
+  ["se te pegó", "Something got stuck on you (unexpected).", "Se te pegó algo en el zapato. — Something got stuck on your shoe."],
+  ["el zapato", "Shoe.", "El zapato izquierdo. — The left shoe."],
+  ["izquierdo", "Left.", "El zapato izquierdo. — The left shoe."],
+  ["derecho", "Right (direction).", "El zapato derecho. — The right shoe."],
+  ["oye", "Hey / listen (to get attention).", "Oye, ven acá. — Hey, come here."],
+  ["verdad", "True / right; the truth.", "Ah, verdad, gracias. — Oh, right, thanks."],
+  ["gracias", "Thanks / thank you.", "Gracias, mi pana. — Thanks, buddy."],
+  ["déjame ver", "Let me see.", "Espera, déjame ver. — Wait, let me see."],
+  ["espera", "Wait (command).", "Espera un momento. — Wait a moment."],
+  ["Tienes algo pegado en el zapato izquierdo.", "You have something stuck on your left shoe. (full sentence)", ""]
 ];
 
-const VERSION = "v12";
+const VERSION = "v13";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -428,13 +441,14 @@ function renderFilters(){
 
 // ---- Parte de la oración (verbo / sustantivo / adjetivo / …) ----
 const POSGROUPS = {
-  verb:["meterme a quizlet","pasar (a flashcards)","bregar","janguear","siéntate","pégate (a)","sentirse","salpicar","nadar","tirar agua","parquear","llegar","vamos","tener","espérame","agarrar","traer","mamar","decir","hablar feo","ponerse a","dile","dormir","vete a dormir","duérmete","vete","acostarse","había","tomar","pedir","hay","volar","molestar","quedarse"],
-  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio"],
-  adj:["duro","chévere","más barato","mejor","otro","dos","rico","brutal","asqueroso","sucio","nasty","malo","fatal"],
+  verb:["meterme a quizlet","pasar (a flashcards)","bregar","janguear","siéntate","pégate (a)","sentirse","salpicar","nadar","tirar agua","parquear","llegar","vamos","tener","espérame","agarrar","traer","mamar","decir","hablar feo","ponerse a","dile","dormir","vete a dormir","duérmete","vete","acostarse","había","tomar","pedir","hay","volar","molestar","quedarse","pegarse","espera"],
+  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad"],
+  adj:["duro","chévere","más barato","mejor","otro","dos","rico","brutal","asqueroso","sucio","nasty","malo","fatal","pegado","izquierdo","derecho"],
   adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro"],
   prep:["pa'","pa'l","con","en (transporte)"],
   conj:["porque","o","mientras","so"],
-  pron:["tu"]
+  pron:["tu","algo"],
+  expr:["dale","mira","oye","gracias"]
 };
 const POSMAP = {};
 Object.keys(POSGROUPS).forEach(p=>POSGROUPS[p].forEach(t=>{ POSMAP[t.trim().toLowerCase()]=p; }));
