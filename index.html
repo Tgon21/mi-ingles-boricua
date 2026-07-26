@@ -388,7 +388,7 @@ const SEED = [
   ["Vamos al cementerio mañana.", "Let's go to the cemetery tomorrow. (full sentence)", ""]
 ];
 
-const VERSION = "v18";
+const VERSION = "v19";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -632,7 +632,7 @@ function renderList(filter){
     div.addEventListener("click", ()=> div.classList.toggle("revealed"));
     const exl=div.querySelector(".exlink");
     if(exl) exl.addEventListener("click",(e)=>{ e.stopPropagation(); div.classList.toggle("show-ex"); });
-    div.querySelector(".sayrow").addEventListener("click",(e)=>{ e.stopPropagation(); speak(c.term); });
+    div.querySelector(".sayrow").addEventListener("click",(e)=>{ e.stopPropagation(); speak(div.classList.contains("revealed") ? c.def : c.term, div.classList.contains("revealed") ? 'en' : 'es'); });
     div.querySelector(".del").addEventListener("click",(e)=>{
       e.stopPropagation(); deck.splice(i,1); save(deck); applyFilters(); toast("Borrada");
     });
@@ -714,28 +714,39 @@ document.getElementById("copyJson").addEventListener("click", ()=>copy("jsonout"
 let toastTimer;
 function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove("show"),1600); }
 
-// ---- Text-to-speech (device's built-in Spanish voice — free, no service) ----
-let spVoice=null;
+// ---- Text-to-speech (device's built-in voices — free, no service) ----
+let spVoice=null, enVoice=null;
 function pickVoice(){
   if(!('speechSynthesis' in window)) return;
   const vs=speechSynthesis.getVoices();
-  const pref=['es-pr','es-us','es-mx','es-419','es-co','es-ve','es-es'];
-  for(const p of pref){ const v=vs.find(v=>(v.lang||'').toLowerCase()===p); if(v){ spVoice=v; return; } }
-  const any=vs.find(v=>(v.lang||'').toLowerCase().startsWith('es')); if(any) spVoice=any;
+  const es=['es-pr','es-us','es-mx','es-419','es-co','es-ve','es-es'];
+  spVoice=null; for(const p of es){ const v=vs.find(v=>(v.lang||'').toLowerCase()===p); if(v){ spVoice=v; break; } }
+  if(!spVoice){ const a=vs.find(v=>(v.lang||'').toLowerCase().startsWith('es')); if(a) spVoice=a; }
+  const en=['en-us','en-gb','en-au','en-ca'];
+  enVoice=null; for(const p of en){ const v=vs.find(v=>(v.lang||'').toLowerCase()===p); if(v){ enVoice=v; break; } }
+  if(!enVoice){ const a=vs.find(v=>(v.lang||'').toLowerCase().startsWith('en')); if(a) enVoice=a; }
 }
 pickVoice();
 if('speechSynthesis' in window){ speechSynthesis.onvoiceschanged=pickVoice; }
-function speak(text){
+function speak(text, lang){
   if(!text || !('speechSynthesis' in window)) return;
   try{
     speechSynthesis.cancel();
     const u=new SpeechSynthesisUtterance(text);
-    if(spVoice){ u.voice=spVoice; u.lang=spVoice.lang; } else { u.lang='es-US'; }
+    const v = lang==='en' ? enVoice : spVoice;
+    if(v){ u.voice=v; u.lang=v.lang; } else { u.lang = lang==='en' ? 'en-US' : 'es-US'; }
     u.rate=0.92;
     speechSynthesis.speak(u);
   }catch(e){}
 }
-document.getElementById("sayBtn").addEventListener("click", ()=>{ if(order.length) speak(deck[order[pos]].term); });
+// speak whichever side is currently showing, in that side's language
+document.getElementById("sayBtn").addEventListener("click", ()=>{
+  if(!order.length) return;
+  const idx=order[pos], c=deck[idx], fe=frontIsEnglish(idx);
+  const showingSpanish = flipped ? fe : !fe;
+  const text = showingSpanish ? c.term : c.def;
+  speak(text, showingSpanish ? 'es' : 'en');
+});
 
 // ---- Update / hard refresh (fetch newest from network, keep saved cards) ----
 document.getElementById("refresh").addEventListener("click", ()=>{
