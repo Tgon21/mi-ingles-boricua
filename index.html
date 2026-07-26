@@ -374,10 +374,19 @@ const SEED = [
   ["volver", "To return / come back.", "Vuelve ahora. — He's coming right back."],
   ["ahora", "Now.", "Vuelve ahora. — He's coming back now."],
   ["¿Va a tardar mucho?", "Is it going to take long?", "¿Va a tardar mucho? — Is it going to take long?"],
-  ["Él está en la tienda comprando hielo.", "He's at the store buying ice. (full sentence)", ""]
+  ["Él está en la tienda comprando hielo.", "He's at the store buying ice. (full sentence)", ""],
+  ["el cementerio", "Cemetery / graveyard.", "¿Dónde está el cementerio? — Where's the cemetery?"],
+  ["el camposanto", "Cemetery (more formal / old-school).", "El camposanto de la iglesia. — The church cemetery."],
+  ["la iglesia", "Church.", "Cerca de la iglesia. — Near the church."],
+  ["cerca de", "Near / close to.", "Por ahí, cerca de la iglesia. — Over there, near the church."],
+  ["mañana", "Tomorrow (also 'morning').", "Vamos al cementerio mañana. — We're going to the cemetery tomorrow."],
+  ["limpiar", "To clean.", "A limpiar la tumba. — To clean the grave."],
+  ["la tumba", "Grave / tomb.", "La tumba de la abuela. — Grandma's grave."],
+  ["la abuela", "Grandmother.", "La tumba de la abuela. — Grandma's grave."],
+  ["Vamos al cementerio mañana.", "Let's go to the cemetery tomorrow. (full sentence)", ""]
 ];
 
-const VERSION = "v16";
+const VERSION = "v17";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -463,10 +472,10 @@ function renderFilters(){
 
 // ---- Parte de la oración (verbo / sustantivo / adjetivo / …) ----
 const POSGROUPS = {
-  verb:["meterme a quizlet","pasar (a flashcards)","bregar","janguear","siéntate","pégate (a)","sentirse","salpicar","nadar","tirar agua","parquear","llegar","vamos","tener","espérame","agarrar","traer","mamar","decir","hablar feo","ponerse a","dile","dormir","vete a dormir","duérmete","vete","acostarse","había","tomar","pedir","hay","volar","molestar","quedarse","pegarse","espera","estar","comprar","tardar","volver"],
-  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad","la tienda","el hielo"],
+  verb:["meterme a quizlet","pasar (a flashcards)","bregar","janguear","siéntate","pégate (a)","sentirse","salpicar","nadar","tirar agua","parquear","llegar","vamos","tener","espérame","agarrar","traer","mamar","decir","hablar feo","ponerse a","dile","dormir","vete a dormir","duérmete","vete","acostarse","había","tomar","pedir","hay","volar","molestar","quedarse","pegarse","espera","estar","comprar","tardar","volver","limpiar"],
+  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad","la tienda","el hielo","el cementerio","el camposanto","la iglesia","la tumba","la abuela"],
   adj:["duro","chévere","más barato","mejor","otro","dos","rico","brutal","asqueroso","sucio","nasty","malo","fatal","pegado","izquierdo","derecho"],
-  adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro","mucho","ahora"],
+  adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro","mucho","ahora","cerca de","mañana"],
   prep:["pa'","pa'l","con","en (transporte)"],
   conj:["porque","o","mientras","so"],
   pron:["tu","algo","él"],
@@ -501,7 +510,7 @@ function renderPos(){
 
 // ---- Temas (familia / playa / cocina / …) — una tarjeta puede tener varios ----
 const THEMEGROUPS = {
-  family:["papá","mami","hermano","hermana"],
+  family:["papá","mami","hermano","hermana","la abuela"],
   home:["la silla","la mesa","el edificio","el sitio","la compu","zafacón","la bolsa"],
   bathroom:["el baño","toalla","zafacón"],
   food:["la comida","el refresco","bebida","drink","el hielo","tomar","rico","brutal"],
@@ -510,8 +519,8 @@ const THEMEGROUPS = {
   shopping:["chavos","más barato","comprar","la tienda","pedir"],
   health:["la gripe","la fiebre","mejor","sentirse","dormir","acostarse","vete a dormir","duérmete","que duermas bien"],
   social:["gracias","oye","mira","dale","buenas noches","mete mano","pana","janguear","qué bueno","¿qué tal?","¿te gustó?"],
-  time:["ahora","ahora mismo","ahorita (orita)","tarde","ayer","todavía","un rato","un momentito","mientras","ya voy","no todavía","ya es tarde."],
-  place:["aquí","pa' allá","pa' acá","afuera","adentro","por ahí","izquierdo","derecho","ven pa'cá","por dentro"],
+  time:["ahora","ahora mismo","ahorita (orita)","tarde","ayer","todavía","un rato","un momentito","mientras","ya voy","no todavía","ya es tarde.","mañana"],
+  place:["aquí","pa' allá","pa' acá","afuera","adentro","por ahí","izquierdo","derecho","ven pa'cá","por dentro","el cementerio","el camposanto","la iglesia","la tumba","cerca de"],
   slang:["chévere","duro","brutal","al garete","revolú","bregar","nasty","bicho","mámate un bicho.","so"]
 };
 const THEMES={};
