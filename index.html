@@ -305,10 +305,22 @@ const SEED = [
   ["acostarse", "To lie down / go to bed.", "Me voy a acostar. — I'm going to bed."],
   ["me voy a acostar", "I'm going to bed.", "Ya me voy a acostar. — I'm heading to bed now."],
   ["mami", "Mom (affectionate).", "Mami, ya voy. — Mom, I'm coming."],
-  ["Ya es tarde.", "It's late already.", "Ya es tarde, duérmete. — It's late, go to sleep."]
+  ["Ya es tarde.", "It's late already.", "Ya es tarde, duérmete. — It's late, go to sleep."],
+  ["había", "There was / there were.", "Había una abeja en tu drink. — There was a bee in your drink."],
+  ["abeja", "Bee.", "Se me metió una abeja. — A bee got in on me."],
+  ["drink", "Drink (PR Spanglish for 'bebida').", "Había una abeja en tu drink. — There was a bee in your drink."],
+  ["bebida", "Drink / beverage.", "Se me cayó la bebida. — I dropped my drink."],
+  ["se me metió", "It got in (on me) unexpectedly.", "Se me metió una abeja en el drink. — A bee got into my drink."],
+  ["¿Qué pasó?", "What happened?", "¿Qué pasó con el refresco? — What happened with the soda?"],
+  ["el refresco", "Soda / soft drink.", "Quiero un refresco frío. — I want a cold soda."],
+  ["tomar", "To drink / to take.", "¿Te lo vas a tomar? — Are you going to drink it?"],
+  ["pedir", "To order / to ask for.", "Mejor pido otro. — I'd better order another."],
+  ["otro", "Another / another one.", "Pídeme otro. — Get me another."],
+  ["Había una abeja en tu drink.", "There was a bee in your drink. (full sentence)", ""],
+  ["Se me metió una abeja en el drink.", "A bee got into my drink (unexpectedly). (casual full sentence)", ""]
 ];
 
-const VERSION = "v9";
+const VERSION = "v10";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -386,9 +398,9 @@ function renderFilters(){
 
 // ---- Parte de la oración (verbo / sustantivo / adjetivo / …) ----
 const POSGROUPS = {
-  verb:["meterme a quizlet","pasar (a flashcards)","bregar","janguear","siéntate","pégate (a)","sentirse","salpicar","nadar","tirar agua","parquear","llegar","vamos","tener","espérame","agarrar","traer","mamar","decir","hablar feo","ponerse a","dile","dormir","vete a dormir","duérmete","vete","acostarse"],
-  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami"],
-  adj:["duro","chévere","más barato","mejor"],
+  verb:["meterme a quizlet","pasar (a flashcards)","bregar","janguear","siéntate","pégate (a)","sentirse","salpicar","nadar","tirar agua","parquear","llegar","vamos","tener","espérame","agarrar","traer","mamar","decir","hablar feo","ponerse a","dile","dormir","vete a dormir","duérmete","vete","acostarse","había","tomar","pedir"],
+  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco"],
+  adj:["duro","chévere","más barato","mejor","otro"],
   adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía"],
   prep:["pa'","pa'l","con","en (transporte)"],
   conj:["porque","o","mientras"],
