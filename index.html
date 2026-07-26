@@ -329,10 +329,28 @@ const SEED = [
   ["¿Por qué?", "Why?", "¿Por qué están afuera? — Why are you all outside?"],
   ["molestar", "To bother / annoy.", "Pa' no molestarlas. — So as not to bother them."],
   ["quedarse", "To stay.", "Nos quedamos aquí. — We stayed here."],
-  ["Hay dos abejas volando por ahí, so nos vinimos pa' acá.", "There are two bees flying around, so we came over here. (full sentence)", ""]
+  ["Hay dos abejas volando por ahí, so nos vinimos pa' acá.", "There are two bees flying around, so we came over here. (full sentence)", ""],
+  ["rico", "Tasty / delicious (also 'rich').", "La comida estaba rica. — The food was delicious."],
+  ["brutal", "(PR) Awesome / amazing (not 'violent' here).", "La comida estaba brutal. — The food was amazing."],
+  ["la comida", "Food / the meal.", "La comida estaba buenísima. — The food was really good."],
+  ["adentro", "Inside.", "Adentro del edificio. — Inside the building."],
+  ["por dentro", "On the inside.", "El local por dentro estaba fatal. — The place inside was terrible."],
+  ["el edificio", "Building.", "Adentro del edificio. — Inside the building."],
+  ["asqueroso", "Disgusting / gross.", "El baño estaba asqueroso. — The bathroom was disgusting."],
+  ["sucio", "Dirty.", "Estaba bien sucio. — It was really dirty."],
+  ["nasty", "(PR Spanglish) gross / nasty.", "Estaba sucio y nasty. — It was dirty and nasty."],
+  ["la silla", "Chair.", "Las sillas estaban malas. — The chairs were bad."],
+  ["la mesa", "Table.", "Las mesas estaban sucias. — The tables were dirty."],
+  ["el baño", "Bathroom.", "El baño estaba asqueroso. — The bathroom was disgusting."],
+  ["malo", "Bad / in bad shape.", "Las mesas estaban malas. — The tables were in bad shape."],
+  ["el sitio", "Place / spot (also 'el local').", "El sitio estaba bien sucio. — The place was really dirty."],
+  ["fatal", "Terrible / awful.", "El local estaba fatal. — The place was awful."],
+  ["¿Qué tal?", "How is it? / How was it?", "¿Qué tal el restaurante? — How was the restaurant?"],
+  ["¿Te gustó?", "Did you like it?", "¿Te gustó la comida? — Did you like the food?"],
+  ["La comida estaba brutal, pero el sitio estaba bien sucio.", "The food was amazing, but the place was really dirty. (full sentence)", ""]
 ];
 
-const VERSION = "v11";
+const VERSION = "v12";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -411,9 +429,9 @@ function renderFilters(){
 // ---- Parte de la oración (verbo / sustantivo / adjetivo / …) ----
 const POSGROUPS = {
   verb:["meterme a quizlet","pasar (a flashcards)","bregar","janguear","siéntate","pégate (a)","sentirse","salpicar","nadar","tirar agua","parquear","llegar","vamos","tener","espérame","agarrar","traer","mamar","decir","hablar feo","ponerse a","dile","dormir","vete a dormir","duérmete","vete","acostarse","había","tomar","pedir","hay","volar","molestar","quedarse"],
-  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco"],
-  adj:["duro","chévere","más barato","mejor","otro","dos"],
-  adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera"],
+  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio"],
+  adj:["duro","chévere","más barato","mejor","otro","dos","rico","brutal","asqueroso","sucio","nasty","malo","fatal"],
+  adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro"],
   prep:["pa'","pa'l","con","en (transporte)"],
   conj:["porque","o","mientras","so"],
   pron:["tu"]
