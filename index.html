@@ -81,7 +81,10 @@
   .exbtn{background:transparent; border:1px solid var(--line); color:var(--muted); padding:8px 16px; border-radius:10px; font-size:13px; font-weight:600}
   .back .ex{display:none}
   .back.show .ex{display:block}
-  .back.show .exbtn{display:none}
+  .back.show #exBtn{display:none}
+  .back .conjlist{display:none; white-space:pre-line; color:var(--ink); font-size:14px; line-height:1.6; text-align:left}
+  .back.showconj .conjlist{display:block}
+  .back.showconj #conjBtn{display:none}
   .back .def{font-size:19px; line-height:1.45}
   .back .ex{color:var(--accent2); font-size:15px; line-height:1.4}
   .controls{display:flex; gap:10px; margin:16px auto 0; max-width:520px}
@@ -104,6 +107,8 @@
   .row .exlink{display:inline-block; margin-top:8px; font-size:11px; color:var(--muted); border:1px solid var(--line); border-radius:6px; padding:3px 9px; background:transparent}
   .row .ex2{color:var(--accent2); font-size:13px; margin-top:6px; line-height:1.4; display:none}
   .row.show-ex .ex2{display:block}
+  .row .conj3{color:var(--ink); font-size:13px; margin-top:6px; line-height:1.6; white-space:pre-line; display:none}
+  .row.show-conj .conj3{display:block}
   .row.show-ex .exlink{border-color:var(--accent2); color:var(--accent2)}
   .row .del{float:right; color:#ff8a8a; background:transparent; border:none; font-size:13px}
   .row .sayrow{float:left; margin-right:10px; background:transparent; border:none; font-size:17px; color:var(--accent2); padding:0; line-height:1.2}
@@ -151,6 +156,8 @@
           <div class="def" id="backTxt"></div>
           <button class="exbtn" id="exBtn">Ver ejemplo</button>
           <div class="ex" id="ex"></div>
+          <button class="exbtn" id="conjBtn">Conjugaciones</button>
+          <div class="conjlist" id="conjText"></div>
         </div>
       </div>
     </div>
@@ -393,10 +400,7 @@ const SEED = [
   ["dime", "Tell me / go ahead (I'm listening).", "Sí, dime. — Yeah, go ahead."],
   ["estoy", "I am.", "Sí, estoy aquí. — Yeah, I'm here."],
   ["¿Adriel, estás ahí?", "Adriel, are you there? (full sentence)", ""],
-  ["pensar", "To think / believe / plan.", "Pensamos ir más tarde. — We're thinking of going later."],
-  ["pienso", "I think (yo).", "Pienso que sí. — I think so."],
-  ["pensamos", "We think (nosotros).", "Pensamos que va a llover. — We think it's going to rain."],
-  ["piensan", "They / you all think.", "¿Qué piensan ustedes? — What do you all think?"],
+  ["pensar", "To think / believe / plan.", "Pensamos ir más tarde. — We're thinking of going later.", ["yo pienso — I think","tú piensas — you think","él/ella/usted piensa — he/she/you (formal) think","nosotros pensamos — we think","ellos/ustedes piensan — they/you all think"]],
   ["creer", "To believe / think.", "¿Ustedes creen que sí? — Do you all think so?"],
   ["llover", "To rain.", "Va a llover. — It's going to rain."],
   ["el malecón", "The seaside boardwalk / promenade.", "¿Vamos al malecón? — Should we go to the boardwalk?"],
@@ -405,7 +409,7 @@ const SEED = [
   ["Pensamos que va a llover.", "We think it's going to rain. (full sentence)", ""]
 ];
 
-const VERSION = "v21";
+const VERSION = "v22";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -419,36 +423,33 @@ let showAll = false;
 let dirMode = "es"; try{ dirMode = localStorage.getItem("pr_ingles_dir") || "es"; }catch(e){}
 
 function load(){
-  const seeded = SEED.map(s => ({term:s[0], def:s[1], ex:s[2]||""}));
+  const seeded = SEED.map(s => ({term:s[0], def:s[1], ex:s[2]||"", conj:s[3]||null}));
   const seedKeys = SEED.map(s => s[0].trim().toLowerCase());
+  const seedKeySet = new Set(seedKeys);
+  const seedMap={};
+  SEED.forEach(s=>{ seedMap[s[0].trim().toLowerCase()]={def:s[1], ex:s[2]||"", conj:s[3]||null}; });
   let saved = null;
   try { saved = JSON.parse(localStorage.getItem(KEY)); } catch(e){}
   if(!(saved && Array.isArray(saved) && saved.length)){
-    // first ever run — start from the full baked-in set
     save(seeded);
     try { localStorage.setItem(SEEDKEY, JSON.stringify(seedKeys)); } catch(e){}
     return seeded;
   }
-  // merge in any NEW baked-in cards (never seen before AND not already saved)
   let known=[];
   try { known = JSON.parse(localStorage.getItem(SEEDKEY)) || []; } catch(e){}
   const knownSet = new Set(known);
+  // retire baked-in cards that were removed from SEED (leave the user's own added cards alone)
+  saved = saved.filter(c => { const k=c.term.trim().toLowerCase(); return !(knownSet.has(k) && !seedKeySet.has(k)); });
+  // merge in any NEW baked-in cards
   const haveSet = new Set(saved.map(c => c.term.trim().toLowerCase()));
-  let addedNew = 0;
   seeded.forEach((c,i) => {
     const k = seedKeys[i];
-    if(!knownSet.has(k) && !haveSet.has(k)){ saved.push(c); haveSet.add(k); addedNew++; }
+    if(!knownSet.has(k) && !haveSet.has(k)){ saved.push(c); haveSet.add(k); }
   });
-  try { localStorage.setItem(SEEDKEY, JSON.stringify(seedKeys)); } catch(e){} // remember all current seeds
-  // keep built-in cards' meaning/example in sync with the latest baked-in text (self-heal fixes)
-  const seedMap={};
-  SEED.forEach(s=>{ seedMap[s[0].trim().toLowerCase()]={def:s[1], ex:s[2]||""}; });
-  let changed=addedNew>0;
-  saved.forEach(c=>{
-    const m=seedMap[c.term.trim().toLowerCase()];
-    if(m && (c.def!==m.def || c.ex!==m.ex)){ c.def=m.def; c.ex=m.ex; changed=true; }
-  });
-  if(changed) save(saved);
+  try { localStorage.setItem(SEEDKEY, JSON.stringify(seedKeys)); } catch(e){}
+  // keep built-in cards' meaning/example/conjugations synced to the latest baked-in text
+  saved.forEach(c=>{ const m=seedMap[c.term.trim().toLowerCase()]; if(m){ c.def=m.def; c.ex=m.ex; c.conj=m.conj; } });
+  save(saved);
   return saved;
 }
 function save(d){
@@ -491,7 +492,7 @@ function renderFilters(){
 
 // ---- Parte de la oración (verbo / sustantivo / adjetivo / …) ----
 const POSGROUPS = {
-  verb:["meterme a quizlet","pasar (a flashcards)","bregar","janguear","siéntate","pégate (a)","sentirse","salpicar","nadar","tirar agua","parquear","llegar","vamos","tener","espérame","agarrar","traer","mamar","decir","hablar feo","ponerse a","dile","dormir","vete a dormir","duérmete","vete","acostarse","había","tomar","pedir","hay","volar","molestar","quedarse","pegarse","espera","estar","comprar","tardar","volver","limpiar","estás","dime","estoy","pensar","pienso","pensamos","piensan","creer","llover"],
+  verb:["meterme a quizlet","pasar (a flashcards)","bregar","janguear","siéntate","pégate (a)","sentirse","salpicar","nadar","tirar agua","parquear","llegar","vamos","tener","espérame","agarrar","traer","mamar","decir","hablar feo","ponerse a","dile","dormir","vete a dormir","duérmete","vete","acostarse","había","tomar","pedir","hay","volar","molestar","quedarse","pegarse","espera","estar","comprar","tardar","volver","limpiar","estás","dime","estoy","pensar","creer","llover"],
   noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad","la tienda","el hielo","el cementerio","el camposanto","la iglesia","la tumba","la abuela","el malecón"],
   adj:["duro","chévere","más barato","mejor","otro","dos","rico","brutal","asqueroso","sucio","nasty","malo","fatal","pegado","izquierdo","derecho"],
   adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro","mucho","ahora","cerca de","mañana","ahí","a tiempo","más tarde"],
@@ -577,13 +578,13 @@ function frontIsEnglish(i){ if(dirMode==="en") return true; if(dirMode==="es") r
 function render(){
   document.getElementById("deckcount").textContent = deck.length + " tarjetas · " + VERSION;
   const flip=document.getElementById("flip"); flipped=false; flip.classList.remove("flipped");
-  document.getElementById("backFace").classList.remove("show");
+  const backFace=document.getElementById("backFace"); backFace.classList.remove("show"); backFace.classList.remove("showconj");
   const ft=document.getElementById("frontTxt"), bt=document.getElementById("backTxt"), ex=document.getElementById("ex");
   if(!order.length){
     ft.textContent = deck.length ? ("No hay "+(catFilter==="all"?"tarjetas":CATLABEL[catFilter].toLowerCase())+" aquí") : "No hay tarjetas todavía — ¡añade algunas!";
     ft.classList.remove("small");
     document.getElementById("counter").textContent="0 / 0";
-    bt.textContent=""; ex.textContent=""; document.getElementById("exBtn").style.display="none";
+    bt.textContent=""; ex.textContent=""; document.getElementById("exBtn").style.display="none"; document.getElementById("conjBtn").style.display="none";
     return;
   }
   const idx=order[pos], c=deck[idx], fe=frontIsEnglish(idx);
@@ -593,6 +594,9 @@ function render(){
   bt.textContent=backText;
   ex.textContent = c.ex ? "Ej: "+c.ex : "";
   document.getElementById("exBtn").style.display = c.ex ? "" : "none";
+  const hasConj = c.conj && c.conj.length;
+  document.getElementById("conjBtn").style.display = hasConj ? "" : "none";
+  document.getElementById("conjText").textContent = hasConj ? c.conj.join("\n") : "";
   document.getElementById("counter").textContent=(pos+1)+" / "+order.length;
 }
 function doFlip(){ flipped=!flipped; document.getElementById("flip").classList.toggle("flipped", flipped); }
@@ -605,6 +609,7 @@ document.getElementById("prev").addEventListener("click", ()=>step(-1));
 document.getElementById("shuffle").addEventListener("click", ()=>buildOrder(true));
 document.getElementById("reset").addEventListener("click", ()=>buildOrder(false));
 document.getElementById("exBtn").addEventListener("click", (e)=>{ e.stopPropagation(); document.getElementById("backFace").classList.add("show"); });
+document.getElementById("conjBtn").addEventListener("click", (e)=>{ e.stopPropagation(); document.getElementById("backFace").classList.add("showconj"); });
 (function(){ const d=document.getElementById("dir"); d.textContent=DIRLABEL[dirMode];
   d.addEventListener("click", ()=>{ dirMode = dirMode==="es"?"en":(dirMode==="en"?"mix":"es"); try{localStorage.setItem("pr_ingles_dir",dirMode);}catch(e){} d.textContent=DIRLABEL[dirMode]; buildOrder(false); });
 })();
@@ -641,14 +646,19 @@ function renderList(filter){
       '<div class="t"></div>'+
       '<div class="d"></div>'+
       (c.ex ? '<button class="exlink">ejemplo</button>' : '')+
-      '<div class="ex2"></div>';
+      (c.conj&&c.conj.length ? '<button class="exlink cjl">conjugaciones</button>' : '')+
+      '<div class="ex2"></div>'+
+      '<div class="conj3"></div>';
     div.querySelector(".tag").textContent = ({word:"palabra",phrase:"frase",sentence:"oración"})[c.cat] || c.cat || "";
     div.querySelector(".t").textContent = c.term;
     div.querySelector(".d").textContent = c.def;
     if(c.ex) div.querySelector(".ex2").textContent = "Ej: "+c.ex;
+    if(c.conj&&c.conj.length) div.querySelector(".conj3").textContent = c.conj.join("\n");
     div.addEventListener("click", ()=> div.classList.toggle("revealed"));
-    const exl=div.querySelector(".exlink");
+    const exl=div.querySelector(".exlink:not(.cjl)");
     if(exl) exl.addEventListener("click",(e)=>{ e.stopPropagation(); div.classList.toggle("show-ex"); });
+    const cjl=div.querySelector(".cjl");
+    if(cjl) cjl.addEventListener("click",(e)=>{ e.stopPropagation(); div.classList.toggle("show-conj"); });
     div.querySelector(".sayrow").addEventListener("click",(e)=>{ e.stopPropagation(); speak(div.classList.contains("revealed") ? c.def : c.term, div.classList.contains("revealed") ? 'en' : 'es'); });
     div.querySelector(".del").addEventListener("click",(e)=>{
       e.stopPropagation(); deck.splice(i,1); save(deck); applyFilters(); toast("Borrada");
