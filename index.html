@@ -447,7 +447,7 @@ const CONJ = {
 const TENSELABEL={pres:"Presente", past:"Pasado", fut:"Futuro"};
 function hasConj(c){ const cj=c&&c.conj; return !!(cj && ((cj.pres&&cj.pres.length)||(cj.past&&cj.past.length)||(cj.fut&&cj.fut.length))); }
 function fmtConj(cj){ if(!cj) return ""; const out=[]; ["pres","past","fut"].forEach(t=>{ if(cj[t]&&cj[t].length) out.push(TENSELABEL[t]+"\n"+cj[t].join("\n")); }); return out.join("\n\n"); }
-const VERSION = "v25";
+const VERSION = "v26";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -675,10 +675,14 @@ function renderList(filter){
   list.innerHTML="";
   const idxs=[];
   deck.forEach((c,i)=>{
-    if(catFilter!=="all" && c.cat!==catFilter) return;
-    if(posFilter!=="all" && c.pos!==posFilter) return;
-    if(topicFilter!=="all" && !(c.themes && c.themes.includes(topicFilter))) return;
-    if(q && !(c.term.toLowerCase().includes(q) || c.def.toLowerCase().includes(q))) return;
+    if(q){
+      // search hits ALL cards, ignoring the Type/Part/Topic filters
+      if(!(c.term.toLowerCase().includes(q) || c.def.toLowerCase().includes(q) || (c.ex&&c.ex.toLowerCase().includes(q)))) return;
+    } else {
+      if(catFilter!=="all" && c.cat!==catFilter) return;
+      if(posFilter!=="all" && c.pos!==posFilter) return;
+      if(topicFilter!=="all" && !(c.themes && c.themes.includes(topicFilter))) return;
+    }
     idxs.push(i);
   });
   const pages=Math.max(1, Math.ceil(idxs.length/PAGESIZE));
