@@ -112,6 +112,10 @@
   .row.show-ex .exlink{border-color:var(--accent2); color:var(--accent2)}
   .row .del{float:right; color:#ff8a8a; background:transparent; border:none; font-size:13px}
   .row .sayrow{float:left; margin-right:10px; background:transparent; border:none; font-size:17px; color:var(--accent2); padding:0; line-height:1.2}
+  .pager{display:flex; gap:12px; align-items:center; justify-content:center; padding:14px 0 4px}
+  .pager button{background:var(--card); border:1px solid var(--line); color:var(--ink); border-radius:10px; width:46px; height:40px; font-size:18px; font-weight:700}
+  .pager button:disabled{opacity:.35}
+  .pager .pinfo{color:var(--muted); font-size:13px; font-weight:600}
 
   /* Add / Export */
   textarea{width:100%; min-height:150px; padding:12px 14px; border-radius:12px; border:1px solid var(--line);
@@ -184,6 +188,7 @@
     </div>
     <div class="note" style="margin:0 2px 10px">Toca una tarjeta para ver el inglés · toca "ejemplo" para ver la oración.</div>
     <div id="list"></div>
+    <div id="pager" class="pager"></div>
   </section>
 
   <!-- ADD -->
@@ -442,7 +447,7 @@ const CONJ = {
 const TENSELABEL={pres:"Presente", past:"Pasado", fut:"Futuro"};
 function hasConj(c){ const cj=c&&c.conj; return !!(cj && ((cj.pres&&cj.pres.length)||(cj.past&&cj.past.length)||(cj.fut&&cj.fut.length))); }
 function fmtConj(cj){ if(!cj) return ""; const out=[]; ["pres","past","fut"].forEach(t=>{ if(cj[t]&&cj[t].length) out.push(TENSELABEL[t]+"\n"+cj[t].join("\n")); }); return out.join("\n\n"); }
-const VERSION = "v23";
+const VERSION = "v24";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -453,6 +458,8 @@ let catFilter = "all";
 let posFilter = "all";
 let topicFilter = "all";
 let showAll = false;
+let browsePage = 0;
+const PAGESIZE = 30;
 let dirMode = "es"; try{ dirMode = localStorage.getItem("pr_ingles_dir") || "es"; }catch(e){}
 
 function load(){
@@ -593,6 +600,7 @@ function renderTopic(){
   });
 }
 function applyFilters(){
+  browsePage=0;
   renderFilters(); renderPos(); renderTopic();
   const cb=document.getElementById("clearfilters");
   if(cb) cb.style.display = (catFilter==="all"&&posFilter==="all"&&topicFilter==="all") ? "none" : "";
@@ -655,7 +663,7 @@ document.querySelectorAll("nav button").forEach(b=>{
     b.classList.add("active");
     const v = b.dataset.view;
     document.getElementById(v).classList.add("active");
-    if(v==="browse") renderList();
+    if(v==="browse"){ browsePage=0; renderList(); }
     if(v==="export") renderExport();
   });
 });
@@ -665,11 +673,20 @@ function renderList(filter){
   const list = document.getElementById("list");
   const q = (filter||"").trim().toLowerCase();
   list.innerHTML="";
+  const idxs=[];
   deck.forEach((c,i)=>{
     if(catFilter!=="all" && c.cat!==catFilter) return;
     if(posFilter!=="all" && c.pos!==posFilter) return;
     if(topicFilter!=="all" && !(c.themes && c.themes.includes(topicFilter))) return;
     if(q && !(c.term.toLowerCase().includes(q) || c.def.toLowerCase().includes(q))) return;
+    idxs.push(i);
+  });
+  const pages=Math.max(1, Math.ceil(idxs.length/PAGESIZE));
+  if(browsePage>=pages) browsePage=pages-1;
+  if(browsePage<0) browsePage=0;
+  renderPager(idxs.length, pages);
+  idxs.slice(browsePage*PAGESIZE, browsePage*PAGESIZE+PAGESIZE).forEach(i=>{
+    const c=deck[i];
     const div = document.createElement("div");
     div.className = "row" + (showAll ? " revealed" : "");
     div.innerHTML =
@@ -699,7 +716,17 @@ function renderList(filter){
     list.appendChild(div);
   });
 }
-document.getElementById("search").addEventListener("input", e=>renderList(e.target.value));
+function renderPager(total, pages){
+  const pg=document.getElementById("pager"); if(!pg) return;
+  if(pages<=1){ pg.innerHTML=""; return; }
+  pg.innerHTML="";
+  const go=n=>{ browsePage=n; renderList(document.getElementById("search").value); document.getElementById("list").scrollIntoView({block:"start"}); };
+  const mk=(t,dis,fn)=>{ const b=document.createElement("button"); b.textContent=t; b.disabled=dis; if(!dis) b.addEventListener("click",fn); return b; };
+  pg.appendChild(mk("‹", browsePage===0, ()=>go(browsePage-1)));
+  const info=document.createElement("span"); info.className="pinfo"; info.textContent=(browsePage+1)+" / "+pages+"  ·  "+total; pg.appendChild(info);
+  pg.appendChild(mk("›", browsePage>=pages-1, ()=>go(browsePage+1)));
+}
+document.getElementById("search").addEventListener("input", e=>{ browsePage=0; renderList(e.target.value); });
 document.getElementById("catsel").addEventListener("change", e=>{ catFilter=e.target.value; applyFilters(); });
 document.getElementById("possel").addEventListener("change", e=>{ posFilter=e.target.value; applyFilters(); });
 document.getElementById("topicsel").addEventListener("change", e=>{ topicFilter=e.target.value; applyFilters(); });
