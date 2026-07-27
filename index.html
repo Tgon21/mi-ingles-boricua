@@ -422,7 +422,28 @@ const SEED = [
   ["seguir", "To keep / continue.", "Sigan jugando. — Keep playing."],
   ["qué lindo", "How nice / how cute.", "Qué lindo, mira eso. — How cute, look at that."],
   ["allá", "Over there.", "Allá en la playa. — Over there at the beach."],
-  ["Los nenes están haciendo un castillo de arena.", "The kids are making a sand castle. (full sentence)", ""]
+  ["Los nenes están haciendo un castillo de arena.", "The kids are making a sand castle. (full sentence)", ""],
+  ["ir", "To go.", "Nos fuimos pa' la playa. — We headed to the beach."],
+  ["poner", "To put / to place.", "Pusimos la neverita. — We put out the cooler."],
+  ["echar", "To throw / put on / toss.", "Echamos bloqueador. — We put on sunscreen."],
+  ["montar", "To set up / put together (also to ride).", "Montamos las sillas. — We set up the chairs."],
+  ["meterse", "To get into / go in.", "Nos metimos al agua. — We got into the water."],
+  ["pichear", "(PR slang) To ignore / blow off.", "Picheamos el resto del mundo. — We tuned out the rest of the world."],
+  ["sentarse", "To sit down.", "Nos sentamos bajo la sombrilla. — We sat under the umbrella."],
+  ["la neverita", "Cooler / little icebox (PR).", "Pusimos la neverita en la arena. — We put the cooler on the sand."],
+  ["el bloqueador", "Sunscreen.", "Echamos bloqueador. — We put on sunscreen."],
+  ["el corillo", "Crew / group / your people (PR).", "El corillo estaba ready. — The crew was ready."],
+  ["el pincho", "Skewer / grilled meat on a stick (PR).", "Comimos pinchos en la playa. — We ate pinchos at the beach."],
+  ["la sombrilla", "Beach umbrella.", "Nos sentamos bajo la sombrilla. — We sat under the umbrella."],
+  ["el sol", "The sun.", "El sol estaba brutal. — The sun was intense."],
+  ["fresco", "Cool / refreshing / fresh.", "El agua estaba fresca. — The water was refreshing."],
+  ["frío", "Cold.", "Tomamos algo frío. — We drank something cold."],
+  ["ready", "Ready (PR Spanglish).", "El corillo estaba ready. — The crew was ready."],
+  ["boricua", "Puerto Rican.", "Fue un día bien boricua. — It was a very Puerto Rican day."],
+  ["hoy", "Today.", "Hoy nos fuimos pa' la playa. — Today we headed to the beach."],
+  ["temprano", "Early.", "Llegamos bien temprano. — We arrived really early."],
+  ["bajo", "Under / underneath.", "Bajo la sombrilla. — Under the umbrella."],
+  ["Nos fuimos pa' la playa bien temprano.", "We headed to the beach really early. (full sentence)", ""]
 ];
 
 const CONJ = {
@@ -458,12 +479,19 @@ const CONJ = {
   "hacer":{pres:["yo hago","tú haces","él/ella/ud. hace","nosotros hacemos","ellos/uds. hacen"],past:["yo hice","tú hiciste","él/ella/ud. hizo","nosotros hicimos","ellos/uds. hicieron"],fut:["yo haré","tú harás","él/ella/ud. hará","nosotros haremos","ellos/uds. harán"]},
   "jugar":{pres:["yo juego","tú juegas","él/ella/ud. juega","nosotros jugamos","ellos/uds. juegan"],past:["yo jugué","tú jugaste","él/ella/ud. jugó","nosotros jugamos","ellos/uds. jugaron"],fut:["yo jugaré","tú jugarás","él/ella/ud. jugará","nosotros jugaremos","ellos/uds. jugarán"]},
   "dejar":{pres:["yo dejo","tú dejas","él/ella/ud. deja","nosotros dejamos","ellos/uds. dejan"],past:["yo dejé","tú dejaste","él/ella/ud. dejó","nosotros dejamos","ellos/uds. dejaron"],fut:["yo dejaré","tú dejarás","él/ella/ud. dejará","nosotros dejaremos","ellos/uds. dejarán"]},
-  "seguir":{pres:["yo sigo","tú sigues","él/ella/ud. sigue","nosotros seguimos","ellos/uds. siguen"],past:["yo seguí","tú seguiste","él/ella/ud. siguió","nosotros seguimos","ellos/uds. siguieron"],fut:["yo seguiré","tú seguirás","él/ella/ud. seguirá","nosotros seguiremos","ellos/uds. seguirán"]}
+  "seguir":{pres:["yo sigo","tú sigues","él/ella/ud. sigue","nosotros seguimos","ellos/uds. siguen"],past:["yo seguí","tú seguiste","él/ella/ud. siguió","nosotros seguimos","ellos/uds. siguieron"],fut:["yo seguiré","tú seguirás","él/ella/ud. seguirá","nosotros seguiremos","ellos/uds. seguirán"]},
+  "ir":{pres:["yo voy","tú vas","él/ella/ud. va","nosotros vamos","ellos/uds. van"],past:["yo fui","tú fuiste","él/ella/ud. fue","nosotros fuimos","ellos/uds. fueron"],fut:["yo iré","tú irás","él/ella/ud. irá","nosotros iremos","ellos/uds. irán"]},
+  "poner":{pres:["yo pongo","tú pones","él/ella/ud. pone","nosotros ponemos","ellos/uds. ponen"],past:["yo puse","tú pusiste","él/ella/ud. puso","nosotros pusimos","ellos/uds. pusieron"],fut:["yo pondré","tú pondrás","él/ella/ud. pondrá","nosotros pondremos","ellos/uds. pondrán"]},
+  "echar":{pres:["yo echo","tú echas","él/ella/ud. echa","nosotros echamos","ellos/uds. echan"],past:["yo eché","tú echaste","él/ella/ud. echó","nosotros echamos","ellos/uds. echaron"],fut:["yo echaré","tú echarás","él/ella/ud. echará","nosotros echaremos","ellos/uds. echarán"]},
+  "montar":{pres:["yo monto","tú montas","él/ella/ud. monta","nosotros montamos","ellos/uds. montan"],past:["yo monté","tú montaste","él/ella/ud. montó","nosotros montamos","ellos/uds. montaron"],fut:["yo montaré","tú montarás","él/ella/ud. montará","nosotros montaremos","ellos/uds. montarán"]},
+  "meterse":{pres:["yo me meto","tú te metes","él/ella/ud. se mete","nosotros nos metemos","ellos/uds. se meten"],past:["yo me metí","tú te metiste","él/ella/ud. se metió","nosotros nos metimos","ellos/uds. se metieron"],fut:["yo me meteré","tú te meterás","él/ella/ud. se meterá","nosotros nos meteremos","ellos/uds. se meterán"]},
+  "pichear":{pres:["yo picheo","tú picheas","él/ella/ud. pichea","nosotros picheamos","ellos/uds. pichean"],past:["yo picheé","tú picheaste","él/ella/ud. picheó","nosotros picheamos","ellos/uds. pichearon"],fut:["yo pichearé","tú pichearás","él/ella/ud. picheará","nosotros pichearemos","ellos/uds. pichearán"]},
+  "sentarse":{pres:["yo me siento","tú te sientas","él/ella/ud. se sienta","nosotros nos sentamos","ellos/uds. se sientan"],past:["yo me senté","tú te sentaste","él/ella/ud. se sentó","nosotros nos sentamos","ellos/uds. se sentaron"],fut:["yo me sentaré","tú te sentarás","él/ella/ud. se sentará","nosotros nos sentaremos","ellos/uds. se sentarán"]}
 };
 const TENSELABEL={pres:"Presente", past:"Pasado", fut:"Futuro"};
 function hasConj(c){ const cj=c&&c.conj; return !!(cj && ((cj.pres&&cj.pres.length)||(cj.past&&cj.past.length)||(cj.fut&&cj.fut.length))); }
 function fmtConj(cj){ if(!cj) return ""; const out=[]; ["pres","past","fut"].forEach(t=>{ if(cj[t]&&cj[t].length) out.push(TENSELABEL[t]+"\n"+cj[t].join("\n")); }); return out.join("\n\n"); }
-const VERSION = "v28";
+const VERSION = "v29";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -548,11 +576,11 @@ function renderFilters(){
 
 // ---- Parte de la oración (verbo / sustantivo / adjetivo / …) ----
 const POSGROUPS = {
-  verb:["bregar","janguear","sentirse","salpicar","nadar","parquear","llegar","tener","agarrar","traer","mamar","decir","dormir","acostarse","tomar","pedir","volar","molestar","quedarse","pegarse","estar","comprar","tardar","volver","limpiar","pensar","creer","llover","cambiar","hacer","jugar","dejar","seguir"],
-  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad","la tienda","el hielo","el cementerio","el camposanto","la iglesia","la tumba","la abuela","el malecón","el nene","el castillo","la arena"],
-  adj:["duro","chévere","más barato","mejor","otro","dos","rico","brutal","asqueroso","sucio","nasty","malo","fatal","pegado","izquierdo","derecho"],
-  adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro","mucho","ahora","cerca de","mañana","ahí","a tiempo","más tarde","allá"],
-  prep:["pa'","pa'l","con","en (transporte)"],
+  verb:["bregar","janguear","sentirse","salpicar","nadar","parquear","llegar","tener","agarrar","traer","mamar","decir","dormir","acostarse","tomar","pedir","volar","molestar","quedarse","pegarse","estar","comprar","tardar","volver","limpiar","pensar","creer","llover","cambiar","hacer","jugar","dejar","seguir","ir","poner","echar","montar","meterse","pichear","sentarse"],
+  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad","la tienda","el hielo","el cementerio","el camposanto","la iglesia","la tumba","la abuela","el malecón","el nene","el castillo","la arena","la neverita","el bloqueador","el corillo","el pincho","la sombrilla","el sol"],
+  adj:["duro","chévere","más barato","mejor","otro","dos","rico","brutal","asqueroso","sucio","nasty","malo","fatal","pegado","izquierdo","derecho","fresco","frío","ready","boricua"],
+  adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro","mucho","ahora","cerca de","mañana","ahí","a tiempo","más tarde","allá","hoy","temprano"],
+  prep:["pa'","pa'l","con","en (transporte)","bajo"],
   conj:["porque","o","mientras","so"],
   pron:["tu","algo","él","tú"],
   expr:["dale","mira","oye","gracias","meterme a quizlet","pasar (a flashcards)","siéntate","pégate (a)","tirar agua","vamos","espérame","hablar feo","ponerse a","dile","vete a dormir","duérmete","vete","había","hay","espera","estás","dime","estoy"]
@@ -589,15 +617,15 @@ const THEMEGROUPS = {
   family:["papá","mami","hermano","hermana","la abuela","el nene"],
   home:["la silla","la mesa","el edificio","el sitio","la compu","zafacón","la bolsa"],
   bathroom:["el baño","toalla","zafacón"],
-  food:["la comida","el refresco","bebida","drink","el hielo","tomar","rico","brutal"],
-  beach:["la playa","el mar","océano","toalla","chancletas","nadar","el agua","salpicar","el malecón","el castillo","la arena"],
+  food:["la comida","el refresco","bebida","drink","el hielo","tomar","rico","brutal","el pincho"],
+  beach:["la playa","el mar","océano","toalla","chancletas","nadar","el agua","salpicar","el malecón","el castillo","la arena","la neverita","el bloqueador","la sombrilla","el sol","el pincho"],
   transport:["guagua","carro","taxi","cajuela","parquear","en (transporte)","las llaves"],
   shopping:["chavos","más barato","comprar","la tienda","pedir"],
   health:["la gripe","la fiebre","mejor","sentirse","dormir","acostarse","vete a dormir","duérmete","que duermas bien"],
-  social:["gracias","oye","mira","dale","buenas noches","mete mano","pana","janguear","qué bueno","¿qué tal?","¿te gustó?","dime"],
-  time:["ahora","ahora mismo","ahorita (orita)","tarde","ayer","todavía","un rato","un momentito","mientras","ya voy","no todavía","ya es tarde.","mañana","más tarde","a tiempo"],
+  social:["gracias","oye","mira","dale","buenas noches","mete mano","pana","janguear","qué bueno","¿qué tal?","¿te gustó?","dime","el corillo"],
+  time:["ahora","ahora mismo","ahorita (orita)","tarde","ayer","todavía","un rato","un momentito","mientras","ya voy","no todavía","ya es tarde.","mañana","más tarde","a tiempo","hoy","temprano"],
   place:["aquí","pa' allá","pa' acá","afuera","adentro","por ahí","izquierdo","derecho","ven pa'cá","por dentro","el cementerio","el camposanto","la iglesia","la tumba","cerca de","ahí","el malecón","allá"],
-  slang:["chévere","duro","brutal","al garete","revolú","bregar","nasty","bicho","mámate un bicho.","so"]
+  slang:["chévere","duro","brutal","al garete","revolú","bregar","nasty","bicho","mámate un bicho.","so","el corillo","pichear","boricua","ready"]
 };
 const THEMES={};
 Object.keys(THEMEGROUPS).forEach(theme=>THEMEGROUPS[theme].forEach(t=>{ const k=t.trim().toLowerCase(); (THEMES[k]=THEMES[k]||[]).push(theme); }));
