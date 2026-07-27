@@ -392,10 +392,20 @@ const SEED = [
   ["tú", "You (subject pronoun; note: 'tu' = your).", "¿Tú estás ahí? — Are you there?"],
   ["dime", "Tell me / go ahead (I'm listening).", "Sí, dime. — Yeah, go ahead."],
   ["estoy", "I am.", "Sí, estoy aquí. — Yeah, I'm here."],
-  ["¿Adriel, estás ahí?", "Adriel, are you there? (full sentence)", ""]
+  ["¿Adriel, estás ahí?", "Adriel, are you there? (full sentence)", ""],
+  ["pensar", "To think / believe / plan.", "Pensamos ir más tarde. — We're thinking of going later."],
+  ["pienso", "I think (yo).", "Pienso que sí. — I think so."],
+  ["pensamos", "We think (nosotros).", "Pensamos que va a llover. — We think it's going to rain."],
+  ["piensan", "They / you all think.", "¿Qué piensan ustedes? — What do you all think?"],
+  ["creer", "To believe / think.", "¿Ustedes creen que sí? — Do you all think so?"],
+  ["llover", "To rain.", "Va a llover. — It's going to rain."],
+  ["el malecón", "The seaside boardwalk / promenade.", "¿Vamos al malecón? — Should we go to the boardwalk?"],
+  ["a tiempo", "On time.", "¿Llega a tiempo? — Will it arrive on time?"],
+  ["más tarde", "Later.", "Pensamos ir más tarde. — We're thinking of going later."],
+  ["Pensamos que va a llover.", "We think it's going to rain. (full sentence)", ""]
 ];
 
-const VERSION = "v20";
+const VERSION = "v21";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -481,10 +491,10 @@ function renderFilters(){
 
 // ---- Parte de la oración (verbo / sustantivo / adjetivo / …) ----
 const POSGROUPS = {
-  verb:["meterme a quizlet","pasar (a flashcards)","bregar","janguear","siéntate","pégate (a)","sentirse","salpicar","nadar","tirar agua","parquear","llegar","vamos","tener","espérame","agarrar","traer","mamar","decir","hablar feo","ponerse a","dile","dormir","vete a dormir","duérmete","vete","acostarse","había","tomar","pedir","hay","volar","molestar","quedarse","pegarse","espera","estar","comprar","tardar","volver","limpiar","estás","dime","estoy"],
-  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad","la tienda","el hielo","el cementerio","el camposanto","la iglesia","la tumba","la abuela"],
+  verb:["meterme a quizlet","pasar (a flashcards)","bregar","janguear","siéntate","pégate (a)","sentirse","salpicar","nadar","tirar agua","parquear","llegar","vamos","tener","espérame","agarrar","traer","mamar","decir","hablar feo","ponerse a","dile","dormir","vete a dormir","duérmete","vete","acostarse","había","tomar","pedir","hay","volar","molestar","quedarse","pegarse","espera","estar","comprar","tardar","volver","limpiar","estás","dime","estoy","pensar","pienso","pensamos","piensan","creer","llover"],
+  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad","la tienda","el hielo","el cementerio","el camposanto","la iglesia","la tumba","la abuela","el malecón"],
   adj:["duro","chévere","más barato","mejor","otro","dos","rico","brutal","asqueroso","sucio","nasty","malo","fatal","pegado","izquierdo","derecho"],
-  adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro","mucho","ahora","cerca de","mañana","ahí"],
+  adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro","mucho","ahora","cerca de","mañana","ahí","a tiempo","más tarde"],
   prep:["pa'","pa'l","con","en (transporte)"],
   conj:["porque","o","mientras","so"],
   pron:["tu","algo","él","tú"],
@@ -523,13 +533,13 @@ const THEMEGROUPS = {
   home:["la silla","la mesa","el edificio","el sitio","la compu","zafacón","la bolsa"],
   bathroom:["el baño","toalla","zafacón"],
   food:["la comida","el refresco","bebida","drink","el hielo","tomar","rico","brutal"],
-  beach:["la playa","el mar","océano","toalla","chancletas","nadar","el agua","salpicar"],
+  beach:["la playa","el mar","océano","toalla","chancletas","nadar","el agua","salpicar","el malecón"],
   transport:["guagua","carro","taxi","cajuela","parquear","en (transporte)","las llaves"],
   shopping:["chavos","más barato","comprar","la tienda","pedir"],
   health:["la gripe","la fiebre","mejor","sentirse","dormir","acostarse","vete a dormir","duérmete","que duermas bien"],
   social:["gracias","oye","mira","dale","buenas noches","mete mano","pana","janguear","qué bueno","¿qué tal?","¿te gustó?","dime"],
-  time:["ahora","ahora mismo","ahorita (orita)","tarde","ayer","todavía","un rato","un momentito","mientras","ya voy","no todavía","ya es tarde.","mañana"],
-  place:["aquí","pa' allá","pa' acá","afuera","adentro","por ahí","izquierdo","derecho","ven pa'cá","por dentro","el cementerio","el camposanto","la iglesia","la tumba","cerca de","ahí"],
+  time:["ahora","ahora mismo","ahorita (orita)","tarde","ayer","todavía","un rato","un momentito","mientras","ya voy","no todavía","ya es tarde.","mañana","más tarde","a tiempo"],
+  place:["aquí","pa' allá","pa' acá","afuera","adentro","por ahí","izquierdo","derecho","ven pa'cá","por dentro","el cementerio","el camposanto","la iglesia","la tumba","cerca de","ahí","el malecón"],
   slang:["chévere","duro","brutal","al garete","revolú","bregar","nasty","bicho","mámate un bicho.","so"]
 };
 const THEMES={};
