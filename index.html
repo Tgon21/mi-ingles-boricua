@@ -82,7 +82,7 @@
   .back .ex{display:none}
   .back.show .ex{display:block}
   .back.show #exBtn{display:none}
-  .back .conjlist{display:none; white-space:pre-line; color:var(--ink); font-size:14px; line-height:1.6; text-align:left}
+  .back .conjlist{display:none; white-space:pre-line; color:var(--ink); font-size:13px; line-height:1.5; text-align:left; max-height:215px; overflow-y:auto; width:100%; padding:0 4px}
   .back.showconj .conjlist{display:block}
   .back.showconj #conjBtn{display:none}
   .back .def{font-size:19px; line-height:1.45}
@@ -400,7 +400,7 @@ const SEED = [
   ["dime", "Tell me / go ahead (I'm listening).", "Sí, dime. — Yeah, go ahead."],
   ["estoy", "I am.", "Sí, estoy aquí. — Yeah, I'm here."],
   ["¿Adriel, estás ahí?", "Adriel, are you there? (full sentence)", ""],
-  ["pensar", "To think / believe / plan.", "Pensamos ir más tarde. — We're thinking of going later.", ["yo pienso — I think","tú piensas — you think","él/ella/usted piensa — he/she/you (formal) think","nosotros pensamos — we think","ellos/ustedes piensan — they/you all think"]],
+  ["pensar", "To think / believe / plan.", "Pensamos ir más tarde. — We're thinking of going later."],
   ["creer", "To believe / think.", "¿Ustedes creen que sí? — Do you all think so?"],
   ["llover", "To rain.", "Va a llover. — It's going to rain."],
   ["el malecón", "The seaside boardwalk / promenade.", "¿Vamos al malecón? — Should we go to the boardwalk?"],
@@ -409,7 +409,40 @@ const SEED = [
   ["Pensamos que va a llover.", "We think it's going to rain. (full sentence)", ""]
 ];
 
-const VERSION = "v22";
+const CONJ = {
+  "nadar":{pres:["yo nado","tú nadas","él/ella/ud. nada","nosotros nadamos","ellos/uds. nadan"],past:["yo nadé","tú nadaste","él/ella/ud. nadó","nosotros nadamos","ellos/uds. nadaron"],fut:["yo nadaré","tú nadarás","él/ella/ud. nadará","nosotros nadaremos","ellos/uds. nadarán"]},
+  "parquear":{pres:["yo parqueo","tú parqueas","él/ella/ud. parquea","nosotros parqueamos","ellos/uds. parquean"],past:["yo parqueé","tú parqueaste","él/ella/ud. parqueó","nosotros parqueamos","ellos/uds. parquearon"],fut:["yo parquearé","tú parquearás","él/ella/ud. parqueará","nosotros parquearemos","ellos/uds. parquearán"]},
+  "agarrar":{pres:["yo agarro","tú agarras","él/ella/ud. agarra","nosotros agarramos","ellos/uds. agarran"],past:["yo agarré","tú agarraste","él/ella/ud. agarró","nosotros agarramos","ellos/uds. agarraron"],fut:["yo agarraré","tú agarrarás","él/ella/ud. agarrará","nosotros agarraremos","ellos/uds. agarrarán"]},
+  "mamar":{pres:["yo mamo","tú mamas","él/ella/ud. mama","nosotros mamamos","ellos/uds. maman"],past:["yo mamé","tú mamaste","él/ella/ud. mamó","nosotros mamamos","ellos/uds. mamaron"],fut:["yo mamaré","tú mamarás","él/ella/ud. mamará","nosotros mamaremos","ellos/uds. mamarán"]},
+  "tomar":{pres:["yo tomo","tú tomas","él/ella/ud. toma","nosotros tomamos","ellos/uds. toman"],past:["yo tomé","tú tomaste","él/ella/ud. tomó","nosotros tomamos","ellos/uds. tomaron"],fut:["yo tomaré","tú tomarás","él/ella/ud. tomará","nosotros tomaremos","ellos/uds. tomarán"]},
+  "molestar":{pres:["yo molesto","tú molestas","él/ella/ud. molesta","nosotros molestamos","ellos/uds. molestan"],past:["yo molesté","tú molestaste","él/ella/ud. molestó","nosotros molestamos","ellos/uds. molestaron"],fut:["yo molestaré","tú molestarás","él/ella/ud. molestará","nosotros molestaremos","ellos/uds. molestarán"]},
+  "comprar":{pres:["yo compro","tú compras","él/ella/ud. compra","nosotros compramos","ellos/uds. compran"],past:["yo compré","tú compraste","él/ella/ud. compró","nosotros compramos","ellos/uds. compraron"],fut:["yo compraré","tú comprarás","él/ella/ud. comprará","nosotros compraremos","ellos/uds. comprarán"]},
+  "tardar":{pres:["yo tardo","tú tardas","él/ella/ud. tarda","nosotros tardamos","ellos/uds. tardan"],past:["yo tardé","tú tardaste","él/ella/ud. tardó","nosotros tardamos","ellos/uds. tardaron"],fut:["yo tardaré","tú tardarás","él/ella/ud. tardará","nosotros tardaremos","ellos/uds. tardarán"]},
+  "limpiar":{pres:["yo limpio","tú limpias","él/ella/ud. limpia","nosotros limpiamos","ellos/uds. limpian"],past:["yo limpié","tú limpiaste","él/ella/ud. limpió","nosotros limpiamos","ellos/uds. limpiaron"],fut:["yo limpiaré","tú limpiarás","él/ella/ud. limpiará","nosotros limpiaremos","ellos/uds. limpiarán"]},
+  "janguear":{pres:["yo jangueo","tú jangueas","él/ella/ud. janguea","nosotros jangueamos","ellos/uds. janguean"],past:["yo jangueé","tú jangueaste","él/ella/ud. jangueó","nosotros jangueamos","ellos/uds. janguearon"],fut:["yo janguearé","tú janguearás","él/ella/ud. jangueará","nosotros janguearemos","ellos/uds. janguearán"]},
+  "salpicar":{pres:["yo salpico","tú salpicas","él/ella/ud. salpica","nosotros salpicamos","ellos/uds. salpican"],past:["yo salpiqué","tú salpicaste","él/ella/ud. salpicó","nosotros salpicamos","ellos/uds. salpicaron"],fut:["yo salpicaré","tú salpicarás","él/ella/ud. salpicará","nosotros salpicaremos","ellos/uds. salpicarán"]},
+  "llegar":{pres:["yo llego","tú llegas","él/ella/ud. llega","nosotros llegamos","ellos/uds. llegan"],past:["yo llegué","tú llegaste","él/ella/ud. llegó","nosotros llegamos","ellos/uds. llegaron"],fut:["yo llegaré","tú llegarás","él/ella/ud. llegará","nosotros llegaremos","ellos/uds. llegarán"]},
+  "bregar":{pres:["yo brego","tú bregas","él/ella/ud. brega","nosotros bregamos","ellos/uds. bregan"],past:["yo bregué","tú bregaste","él/ella/ud. bregó","nosotros bregamos","ellos/uds. bregaron"],fut:["yo bregaré","tú bregarás","él/ella/ud. bregará","nosotros bregaremos","ellos/uds. bregarán"]},
+  "quedarse":{pres:["yo me quedo","tú te quedas","él/ella/ud. se queda","nosotros nos quedamos","ellos/uds. se quedan"],past:["yo me quedé","tú te quedaste","él/ella/ud. se quedó","nosotros nos quedamos","ellos/uds. se quedaron"],fut:["yo me quedaré","tú te quedarás","él/ella/ud. se quedará","nosotros nos quedaremos","ellos/uds. se quedarán"]},
+  "pegarse":{pres:["yo me pego","tú te pegas","él/ella/ud. se pega","nosotros nos pegamos","ellos/uds. se pegan"],past:["yo me pegué","tú te pegaste","él/ella/ud. se pegó","nosotros nos pegamos","ellos/uds. se pegaron"],fut:["yo me pegaré","tú te pegarás","él/ella/ud. se pegará","nosotros nos pegaremos","ellos/uds. se pegarán"]},
+  "tener":{pres:["yo tengo","tú tienes","él/ella/ud. tiene","nosotros tenemos","ellos/uds. tienen"],past:["yo tuve","tú tuviste","él/ella/ud. tuvo","nosotros tuvimos","ellos/uds. tuvieron"],fut:["yo tendré","tú tendrás","él/ella/ud. tendrá","nosotros tendremos","ellos/uds. tendrán"]},
+  "traer":{pres:["yo traigo","tú traes","él/ella/ud. trae","nosotros traemos","ellos/uds. traen"],past:["yo traje","tú trajiste","él/ella/ud. trajo","nosotros trajimos","ellos/uds. trajeron"],fut:["yo traeré","tú traerás","él/ella/ud. traerá","nosotros traeremos","ellos/uds. traerán"]},
+  "decir":{pres:["yo digo","tú dices","él/ella/ud. dice","nosotros decimos","ellos/uds. dicen"],past:["yo dije","tú dijiste","él/ella/ud. dijo","nosotros dijimos","ellos/uds. dijeron"],fut:["yo diré","tú dirás","él/ella/ud. dirá","nosotros diremos","ellos/uds. dirán"]},
+  "estar":{pres:["yo estoy","tú estás","él/ella/ud. está","nosotros estamos","ellos/uds. están"],past:["yo estuve","tú estuviste","él/ella/ud. estuvo","nosotros estuvimos","ellos/uds. estuvieron"],fut:["yo estaré","tú estarás","él/ella/ud. estará","nosotros estaremos","ellos/uds. estarán"]},
+  "dormir":{pres:["yo duermo","tú duermes","él/ella/ud. duerme","nosotros dormimos","ellos/uds. duermen"],past:["yo dormí","tú dormiste","él/ella/ud. durmió","nosotros dormimos","ellos/uds. durmieron"],fut:["yo dormiré","tú dormirás","él/ella/ud. dormirá","nosotros dormiremos","ellos/uds. dormirán"]},
+  "pedir":{pres:["yo pido","tú pides","él/ella/ud. pide","nosotros pedimos","ellos/uds. piden"],past:["yo pedí","tú pediste","él/ella/ud. pidió","nosotros pedimos","ellos/uds. pidieron"],fut:["yo pediré","tú pedirás","él/ella/ud. pedirá","nosotros pediremos","ellos/uds. pedirán"]},
+  "volar":{pres:["yo vuelo","tú vuelas","él/ella/ud. vuela","nosotros volamos","ellos/uds. vuelan"],past:["yo volé","tú volaste","él/ella/ud. voló","nosotros volamos","ellos/uds. volaron"],fut:["yo volaré","tú volarás","él/ella/ud. volará","nosotros volaremos","ellos/uds. volarán"]},
+  "volver":{pres:["yo vuelvo","tú vuelves","él/ella/ud. vuelve","nosotros volvemos","ellos/uds. vuelven"],past:["yo volví","tú volviste","él/ella/ud. volvió","nosotros volvimos","ellos/uds. volvieron"],fut:["yo volveré","tú volverás","él/ella/ud. volverá","nosotros volveremos","ellos/uds. volverán"]},
+  "pensar":{pres:["yo pienso","tú piensas","él/ella/ud. piensa","nosotros pensamos","ellos/uds. piensan"],past:["yo pensé","tú pensaste","él/ella/ud. pensó","nosotros pensamos","ellos/uds. pensaron"],fut:["yo pensaré","tú pensarás","él/ella/ud. pensará","nosotros pensaremos","ellos/uds. pensarán"]},
+  "creer":{pres:["yo creo","tú crees","él/ella/ud. cree","nosotros creemos","ellos/uds. creen"],past:["yo creí","tú creíste","él/ella/ud. creyó","nosotros creímos","ellos/uds. creyeron"],fut:["yo creeré","tú creerás","él/ella/ud. creerá","nosotros creeremos","ellos/uds. creerán"]},
+  "sentirse":{pres:["yo me siento","tú te sientes","él/ella/ud. se siente","nosotros nos sentimos","ellos/uds. se sienten"],past:["yo me sentí","tú te sentiste","él/ella/ud. se sintió","nosotros nos sentimos","ellos/uds. se sintieron"],fut:["yo me sentiré","tú te sentirás","él/ella/ud. se sentirá","nosotros nos sentiremos","ellos/uds. se sentirán"]},
+  "acostarse":{pres:["yo me acuesto","tú te acuestas","él/ella/ud. se acuesta","nosotros nos acostamos","ellos/uds. se acuestan"],past:["yo me acosté","tú te acostaste","él/ella/ud. se acostó","nosotros nos acostamos","ellos/uds. se acostaron"],fut:["yo me acostaré","tú te acostarás","él/ella/ud. se acostará","nosotros nos acostaremos","ellos/uds. se acostarán"]},
+  "llover":{pres:["llueve"],past:["llovió"],fut:["lloverá"]}
+};
+const TENSELABEL={pres:"Presente", past:"Pasado", fut:"Futuro"};
+function hasConj(c){ const cj=c&&c.conj; return !!(cj && ((cj.pres&&cj.pres.length)||(cj.past&&cj.past.length)||(cj.fut&&cj.fut.length))); }
+function fmtConj(cj){ if(!cj) return ""; const out=[]; ["pres","past","fut"].forEach(t=>{ if(cj[t]&&cj[t].length) out.push(TENSELABEL[t]+"\n"+cj[t].join("\n")); }); return out.join("\n\n"); }
+const VERSION = "v23";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -423,11 +456,11 @@ let showAll = false;
 let dirMode = "es"; try{ dirMode = localStorage.getItem("pr_ingles_dir") || "es"; }catch(e){}
 
 function load(){
-  const seeded = SEED.map(s => ({term:s[0], def:s[1], ex:s[2]||"", conj:s[3]||null}));
+  const seeded = SEED.map(s => ({term:s[0], def:s[1], ex:s[2]||"", conj:CONJ[s[0].trim().toLowerCase()]||null}));
   const seedKeys = SEED.map(s => s[0].trim().toLowerCase());
   const seedKeySet = new Set(seedKeys);
   const seedMap={};
-  SEED.forEach(s=>{ seedMap[s[0].trim().toLowerCase()]={def:s[1], ex:s[2]||"", conj:s[3]||null}; });
+  SEED.forEach(s=>{ seedMap[s[0].trim().toLowerCase()]={def:s[1], ex:s[2]||"", conj:CONJ[s[0].trim().toLowerCase()]||null}; });
   let saved = null;
   try { saved = JSON.parse(localStorage.getItem(KEY)); } catch(e){}
   if(!(saved && Array.isArray(saved) && saved.length)){
@@ -594,9 +627,9 @@ function render(){
   bt.textContent=backText;
   ex.textContent = c.ex ? "Ej: "+c.ex : "";
   document.getElementById("exBtn").style.display = c.ex ? "" : "none";
-  const hasConj = c.conj && c.conj.length;
-  document.getElementById("conjBtn").style.display = hasConj ? "" : "none";
-  document.getElementById("conjText").textContent = hasConj ? c.conj.join("\n") : "";
+  const hc = hasConj(c);
+  document.getElementById("conjBtn").style.display = hc ? "" : "none";
+  document.getElementById("conjText").textContent = hc ? fmtConj(c.conj) : "";
   document.getElementById("counter").textContent=(pos+1)+" / "+order.length;
 }
 function doFlip(){ flipped=!flipped; document.getElementById("flip").classList.toggle("flipped", flipped); }
@@ -646,14 +679,14 @@ function renderList(filter){
       '<div class="t"></div>'+
       '<div class="d"></div>'+
       (c.ex ? '<button class="exlink">ejemplo</button>' : '')+
-      (c.conj&&c.conj.length ? '<button class="exlink cjl">conjugaciones</button>' : '')+
+      (hasConj(c) ? '<button class="exlink cjl">conjugaciones</button>' : '')+
       '<div class="ex2"></div>'+
       '<div class="conj3"></div>';
     div.querySelector(".tag").textContent = ({word:"palabra",phrase:"frase",sentence:"oración"})[c.cat] || c.cat || "";
     div.querySelector(".t").textContent = c.term;
     div.querySelector(".d").textContent = c.def;
     if(c.ex) div.querySelector(".ex2").textContent = "Ej: "+c.ex;
-    if(c.conj&&c.conj.length) div.querySelector(".conj3").textContent = c.conj.join("\n");
+    if(hasConj(c)) div.querySelector(".conj3").textContent = fmtConj(c.conj);
     div.addEventListener("click", ()=> div.classList.toggle("revealed"));
     const exl=div.querySelector(".exlink:not(.cjl)");
     if(exl) exl.addEventListener("click",(e)=>{ e.stopPropagation(); div.classList.toggle("show-ex"); });
