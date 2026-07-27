@@ -411,7 +411,8 @@ const SEED = [
   ["el malecón", "The seaside boardwalk / promenade.", "¿Vamos al malecón? — Should we go to the boardwalk?"],
   ["a tiempo", "On time.", "¿Llega a tiempo? — Will it arrive on time?"],
   ["más tarde", "Later.", "Pensamos ir más tarde. — We're thinking of going later."],
-  ["Pensamos que va a llover.", "We think it's going to rain. (full sentence)", ""]
+  ["Pensamos que va a llover.", "We think it's going to rain. (full sentence)", ""],
+  ["cambiar", "To change / switch.", "Voy a cambiar de ropa. — I'm going to change clothes."]
 ];
 
 const CONJ = {
@@ -442,12 +443,13 @@ const CONJ = {
   "creer":{pres:["yo creo","tú crees","él/ella/ud. cree","nosotros creemos","ellos/uds. creen"],past:["yo creí","tú creíste","él/ella/ud. creyó","nosotros creímos","ellos/uds. creyeron"],fut:["yo creeré","tú creerás","él/ella/ud. creerá","nosotros creeremos","ellos/uds. creerán"]},
   "sentirse":{pres:["yo me siento","tú te sientes","él/ella/ud. se siente","nosotros nos sentimos","ellos/uds. se sienten"],past:["yo me sentí","tú te sentiste","él/ella/ud. se sintió","nosotros nos sentimos","ellos/uds. se sintieron"],fut:["yo me sentiré","tú te sentirás","él/ella/ud. se sentirá","nosotros nos sentiremos","ellos/uds. se sentirán"]},
   "acostarse":{pres:["yo me acuesto","tú te acuestas","él/ella/ud. se acuesta","nosotros nos acostamos","ellos/uds. se acuestan"],past:["yo me acosté","tú te acostaste","él/ella/ud. se acostó","nosotros nos acostamos","ellos/uds. se acostaron"],fut:["yo me acostaré","tú te acostarás","él/ella/ud. se acostará","nosotros nos acostaremos","ellos/uds. se acostarán"]},
-  "llover":{pres:["llueve"],past:["llovió"],fut:["lloverá"]}
+  "llover":{pres:["llueve"],past:["llovió"],fut:["lloverá"]},
+  "cambiar":{pres:["yo cambio","tú cambias","él/ella/ud. cambia","nosotros cambiamos","ellos/uds. cambian"],past:["yo cambié","tú cambiaste","él/ella/ud. cambió","nosotros cambiamos","ellos/uds. cambiaron"],fut:["yo cambiaré","tú cambiarás","él/ella/ud. cambiará","nosotros cambiaremos","ellos/uds. cambiarán"]}
 };
 const TENSELABEL={pres:"Presente", past:"Pasado", fut:"Futuro"};
 function hasConj(c){ const cj=c&&c.conj; return !!(cj && ((cj.pres&&cj.pres.length)||(cj.past&&cj.past.length)||(cj.fut&&cj.fut.length))); }
 function fmtConj(cj){ if(!cj) return ""; const out=[]; ["pres","past","fut"].forEach(t=>{ if(cj[t]&&cj[t].length) out.push(TENSELABEL[t]+"\n"+cj[t].join("\n")); }); return out.join("\n\n"); }
-const VERSION = "v26";
+const VERSION = "v27";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -532,7 +534,7 @@ function renderFilters(){
 
 // ---- Parte de la oración (verbo / sustantivo / adjetivo / …) ----
 const POSGROUPS = {
-  verb:["bregar","janguear","sentirse","salpicar","nadar","parquear","llegar","tener","agarrar","traer","mamar","decir","dormir","acostarse","tomar","pedir","volar","molestar","quedarse","pegarse","estar","comprar","tardar","volver","limpiar","pensar","creer","llover"],
+  verb:["bregar","janguear","sentirse","salpicar","nadar","parquear","llegar","tener","agarrar","traer","mamar","decir","dormir","acostarse","tomar","pedir","volar","molestar","quedarse","pegarse","estar","comprar","tardar","volver","limpiar","pensar","creer","llover","cambiar"],
   noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad","la tienda","el hielo","el cementerio","el camposanto","la iglesia","la tumba","la abuela","el malecón"],
   adj:["duro","chévere","más barato","mejor","otro","dos","rico","brutal","asqueroso","sucio","nasty","malo","fatal","pegado","izquierdo","derecho"],
   adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro","mucho","ahora","cerca de","mañana","ahí","a tiempo","más tarde"],
