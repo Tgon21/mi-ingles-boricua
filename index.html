@@ -385,10 +385,17 @@ const SEED = [
   ["limpiar", "To clean.", "A limpiar la tumba. — To clean the grave."],
   ["la tumba", "Grave / tomb.", "La tumba de la abuela. — Grandma's grave."],
   ["la abuela", "Grandmother.", "La tumba de la abuela. — Grandma's grave."],
-  ["Vamos al cementerio mañana.", "Let's go to the cemetery tomorrow. (full sentence)", ""]
+  ["Vamos al cementerio mañana.", "Let's go to the cemetery tomorrow. (full sentence)", ""],
+  ["¿Estás ahí?", "Are you there?", "Adriel, ¿estás ahí? — Adriel, are you there?"],
+  ["estás", "You are (tú form of 'estar').", "¿Dónde estás? — Where are you?"],
+  ["ahí", "There / in there.", "¿Estás ahí? — Are you there?"],
+  ["tú", "You (subject pronoun; note: 'tu' = your).", "¿Tú estás ahí? — Are you there?"],
+  ["dime", "Tell me / go ahead (I'm listening).", "Sí, dime. — Yeah, go ahead."],
+  ["estoy", "I am.", "Sí, estoy aquí. — Yeah, I'm here."],
+  ["¿Adriel, estás ahí?", "Adriel, are you there? (full sentence)", ""]
 ];
 
-const VERSION = "v19";
+const VERSION = "v20";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -474,13 +481,13 @@ function renderFilters(){
 
 // ---- Parte de la oración (verbo / sustantivo / adjetivo / …) ----
 const POSGROUPS = {
-  verb:["meterme a quizlet","pasar (a flashcards)","bregar","janguear","siéntate","pégate (a)","sentirse","salpicar","nadar","tirar agua","parquear","llegar","vamos","tener","espérame","agarrar","traer","mamar","decir","hablar feo","ponerse a","dile","dormir","vete a dormir","duérmete","vete","acostarse","había","tomar","pedir","hay","volar","molestar","quedarse","pegarse","espera","estar","comprar","tardar","volver","limpiar"],
+  verb:["meterme a quizlet","pasar (a flashcards)","bregar","janguear","siéntate","pégate (a)","sentirse","salpicar","nadar","tirar agua","parquear","llegar","vamos","tener","espérame","agarrar","traer","mamar","decir","hablar feo","ponerse a","dile","dormir","vete a dormir","duérmete","vete","acostarse","había","tomar","pedir","hay","volar","molestar","quedarse","pegarse","espera","estar","comprar","tardar","volver","limpiar","estás","dime","estoy"],
   noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad","la tienda","el hielo","el cementerio","el camposanto","la iglesia","la tumba","la abuela"],
   adj:["duro","chévere","más barato","mejor","otro","dos","rico","brutal","asqueroso","sucio","nasty","malo","fatal","pegado","izquierdo","derecho"],
-  adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro","mucho","ahora","cerca de","mañana"],
+  adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro","mucho","ahora","cerca de","mañana","ahí"],
   prep:["pa'","pa'l","con","en (transporte)"],
   conj:["porque","o","mientras","so"],
-  pron:["tu","algo","él"],
+  pron:["tu","algo","él","tú"],
   expr:["dale","mira","oye","gracias"]
 };
 const POSMAP = {};
@@ -520,9 +527,9 @@ const THEMEGROUPS = {
   transport:["guagua","carro","taxi","cajuela","parquear","en (transporte)","las llaves"],
   shopping:["chavos","más barato","comprar","la tienda","pedir"],
   health:["la gripe","la fiebre","mejor","sentirse","dormir","acostarse","vete a dormir","duérmete","que duermas bien"],
-  social:["gracias","oye","mira","dale","buenas noches","mete mano","pana","janguear","qué bueno","¿qué tal?","¿te gustó?"],
+  social:["gracias","oye","mira","dale","buenas noches","mete mano","pana","janguear","qué bueno","¿qué tal?","¿te gustó?","dime"],
   time:["ahora","ahora mismo","ahorita (orita)","tarde","ayer","todavía","un rato","un momentito","mientras","ya voy","no todavía","ya es tarde.","mañana"],
-  place:["aquí","pa' allá","pa' acá","afuera","adentro","por ahí","izquierdo","derecho","ven pa'cá","por dentro","el cementerio","el camposanto","la iglesia","la tumba","cerca de"],
+  place:["aquí","pa' allá","pa' acá","afuera","adentro","por ahí","izquierdo","derecho","ven pa'cá","por dentro","el cementerio","el camposanto","la iglesia","la tumba","cerca de","ahí"],
   slang:["chévere","duro","brutal","al garete","revolú","bregar","nasty","bicho","mámate un bicho.","so"]
 };
 const THEMES={};
