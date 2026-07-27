@@ -291,7 +291,7 @@ const SEED = [
   ["ahorita (orita)", "In a little while / later — in PR it does NOT mean right now.", "Ahorita lo hago. — I'll do it in a bit."],
   ["¿Dónde está...?", "Where is...?", "¿Dónde está tu papá? — Where is your dad?"],
   ["¿Ya llegó?", "Did he/she arrive yet? / Are they here?", "¿Ya llegó papá? — Is Dad here yet?"],
-  ["llegar", "To arrive.", "Ya llegó a la casa. — He already got home."],
+  ["llegar", "To arrive / to reach / to make it (get there).", "No llego al techo. — I can't reach the ceiling."],
   ["todavía", "Yet / still.", "No todavía. — Not yet."],
   ["no todavía", "Not yet.", "No todavía, está parquiando. — Not yet, he's parking."],
   ["Tu papá está parquiando ahora mismo.", "Your dad is parking right now. (full sentence)", ""],
@@ -443,7 +443,10 @@ const SEED = [
   ["hoy", "Today.", "Hoy nos fuimos pa' la playa. — Today we headed to the beach."],
   ["temprano", "Early.", "Llegamos bien temprano. — We arrived really early."],
   ["bajo", "Under / underneath.", "Bajo la sombrilla. — Under the umbrella."],
-  ["Nos fuimos pa' la playa bien temprano.", "We headed to the beach really early. (full sentence)", ""]
+  ["Nos fuimos pa' la playa bien temprano.", "We headed to the beach really early. (full sentence)", ""],
+  ["salir", "To leave / to go out.", "Salimos temprano. — We left early."],
+  ["el techo", "Ceiling / roof.", "No llego al techo. — I can't reach the ceiling."],
+  ["para que", "So that / in order that (takes the subjunctive).", "Para que no llegue tarde. — So that I don't arrive late."]
 ];
 
 const CONJ = {
@@ -486,12 +489,13 @@ const CONJ = {
   "montar":{pres:["yo monto","tú montas","él/ella/ud. monta","nosotros montamos","ellos/uds. montan"],past:["yo monté","tú montaste","él/ella/ud. montó","nosotros montamos","ellos/uds. montaron"],fut:["yo montaré","tú montarás","él/ella/ud. montará","nosotros montaremos","ellos/uds. montarán"]},
   "meterse":{pres:["yo me meto","tú te metes","él/ella/ud. se mete","nosotros nos metemos","ellos/uds. se meten"],past:["yo me metí","tú te metiste","él/ella/ud. se metió","nosotros nos metimos","ellos/uds. se metieron"],fut:["yo me meteré","tú te meterás","él/ella/ud. se meterá","nosotros nos meteremos","ellos/uds. se meterán"]},
   "pichear":{pres:["yo picheo","tú picheas","él/ella/ud. pichea","nosotros picheamos","ellos/uds. pichean"],past:["yo picheé","tú picheaste","él/ella/ud. picheó","nosotros picheamos","ellos/uds. pichearon"],fut:["yo pichearé","tú pichearás","él/ella/ud. picheará","nosotros pichearemos","ellos/uds. pichearán"]},
-  "sentarse":{pres:["yo me siento","tú te sientas","él/ella/ud. se sienta","nosotros nos sentamos","ellos/uds. se sientan"],past:["yo me senté","tú te sentaste","él/ella/ud. se sentó","nosotros nos sentamos","ellos/uds. se sentaron"],fut:["yo me sentaré","tú te sentarás","él/ella/ud. se sentará","nosotros nos sentaremos","ellos/uds. se sentarán"]}
+  "sentarse":{pres:["yo me siento","tú te sientas","él/ella/ud. se sienta","nosotros nos sentamos","ellos/uds. se sientan"],past:["yo me senté","tú te sentaste","él/ella/ud. se sentó","nosotros nos sentamos","ellos/uds. se sentaron"],fut:["yo me sentaré","tú te sentarás","él/ella/ud. se sentará","nosotros nos sentaremos","ellos/uds. se sentarán"]},
+  "salir":{pres:["yo salgo","tú sales","él/ella/ud. sale","nosotros salimos","ellos/uds. salen"],past:["yo salí","tú saliste","él/ella/ud. salió","nosotros salimos","ellos/uds. salieron"],fut:["yo saldré","tú saldrás","él/ella/ud. saldrá","nosotros saldremos","ellos/uds. saldrán"]}
 };
 const TENSELABEL={pres:"Presente", past:"Pasado", fut:"Futuro"};
 function hasConj(c){ const cj=c&&c.conj; return !!(cj && ((cj.pres&&cj.pres.length)||(cj.past&&cj.past.length)||(cj.fut&&cj.fut.length))); }
 function fmtConj(cj){ if(!cj) return ""; const out=[]; ["pres","past","fut"].forEach(t=>{ if(cj[t]&&cj[t].length) out.push(TENSELABEL[t]+"\n"+cj[t].join("\n")); }); return out.join("\n\n"); }
-const VERSION = "v29";
+const VERSION = "v30";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -576,12 +580,12 @@ function renderFilters(){
 
 // ---- Parte de la oración (verbo / sustantivo / adjetivo / …) ----
 const POSGROUPS = {
-  verb:["bregar","janguear","sentirse","salpicar","nadar","parquear","llegar","tener","agarrar","traer","mamar","decir","dormir","acostarse","tomar","pedir","volar","molestar","quedarse","pegarse","estar","comprar","tardar","volver","limpiar","pensar","creer","llover","cambiar","hacer","jugar","dejar","seguir","ir","poner","echar","montar","meterse","pichear","sentarse"],
-  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad","la tienda","el hielo","el cementerio","el camposanto","la iglesia","la tumba","la abuela","el malecón","el nene","el castillo","la arena","la neverita","el bloqueador","el corillo","el pincho","la sombrilla","el sol"],
+  verb:["bregar","janguear","sentirse","salpicar","nadar","parquear","llegar","tener","agarrar","traer","mamar","decir","dormir","acostarse","tomar","pedir","volar","molestar","quedarse","pegarse","estar","comprar","tardar","volver","limpiar","pensar","creer","llover","cambiar","hacer","jugar","dejar","seguir","ir","poner","echar","montar","meterse","pichear","sentarse","salir"],
+  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad","la tienda","el hielo","el cementerio","el camposanto","la iglesia","la tumba","la abuela","el malecón","el nene","el castillo","la arena","la neverita","el bloqueador","el corillo","el pincho","la sombrilla","el sol","el techo"],
   adj:["duro","chévere","más barato","mejor","otro","dos","rico","brutal","asqueroso","sucio","nasty","malo","fatal","pegado","izquierdo","derecho","fresco","frío","ready","boricua"],
   adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro","mucho","ahora","cerca de","mañana","ahí","a tiempo","más tarde","allá","hoy","temprano"],
   prep:["pa'","pa'l","con","en (transporte)","bajo"],
-  conj:["porque","o","mientras","so"],
+  conj:["porque","o","mientras","so","para que"],
   pron:["tu","algo","él","tú"],
   expr:["dale","mira","oye","gracias","meterme a quizlet","pasar (a flashcards)","siéntate","pégate (a)","tirar agua","vamos","espérame","hablar feo","ponerse a","dile","vete a dormir","duérmete","vete","había","hay","espera","estás","dime","estoy"]
 };
@@ -615,7 +619,7 @@ function renderPos(){
 // ---- Temas (familia / playa / cocina / …) — una tarjeta puede tener varios ----
 const THEMEGROUPS = {
   family:["papá","mami","hermano","hermana","la abuela","el nene"],
-  home:["la silla","la mesa","el edificio","el sitio","la compu","zafacón","la bolsa"],
+  home:["la silla","la mesa","el edificio","el sitio","la compu","zafacón","la bolsa","el techo"],
   bathroom:["el baño","toalla","zafacón"],
   food:["la comida","el refresco","bebida","drink","el hielo","tomar","rico","brutal","el pincho"],
   beach:["la playa","el mar","océano","toalla","chancletas","nadar","el agua","salpicar","el malecón","el castillo","la arena","la neverita","el bloqueador","la sombrilla","el sol","el pincho"],
