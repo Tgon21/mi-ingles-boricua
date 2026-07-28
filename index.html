@@ -497,7 +497,17 @@ const SEED = [
   ["el solazo", "Blazing sun / a blast of strong sun.", "Me dio un solazo. — The sun really got me."],
   ["la quemadura de sol", "Sunburn (more formal).", "Tengo una quemadura de sol. — I have a sunburn."],
   ["de los codos pa' arriba", "From the elbows up.", "Quemao de los codos pa' arriba. — Sunburned from the elbows up."],
-  ["Tengo quemao en la parte de atrás del cuello, los hombros y los brazos, de los codos pa' arriba.", "I'm sunburned on the back of my neck, my shoulders, and my arms, from the elbows up.", ""]
+  ["Tengo quemao en la parte de atrás del cuello, los hombros y los brazos, de los codos pa' arriba.", "I'm sunburned on the back of my neck, my shoulders, and my arms, from the elbows up.", ""],
+  ["poder", "To be able to / can.", "¿Puedo ir al baño? — Can I go to the bathroom?"],
+  ["puedo", "I can / may I (from 'poder').", "¿Puedo ir al baño? — Can I go to the bathroom?"],
+  ["al", "To the (a + el).", "Voy al baño. — I'm going to the bathroom."],
+  ["dónde", "Where.", "¿Dónde está el baño? — Where's the bathroom?"],
+  ["está", "Is / is located (from 'estar').", "¿Dónde está el baño? — Where's the bathroom?"],
+  ["me das chance", "You give me a chance / will you let me (casual).", "¿Me das chance de ir al baño? — Can you let me go to the bathroom?"],
+  ["claro", "Of course / sure.", "Sí, claro. — Yeah, of course."],
+  ["¿Puedo ir al baño?", "Can I go to the bathroom?", "¿Puedo ir al baño? — Can I go to the bathroom?"],
+  ["¿Dónde está el baño?", "Where is the bathroom?", "¿Dónde está el baño? — Where is the bathroom?"],
+  ["¿Me das chance de ir al baño?", "Can you let me go to the bathroom? (casual)", "¿Me das chance de ir al baño? — Can you let me go to the bathroom?"]
 ];
 
 const CONJ = {
@@ -543,12 +553,13 @@ const CONJ = {
   "sentarse":{pres:"I sit down · he/she sits down",ing:"sitting down — I'm sitting down",past:"sat down — I sat down",fut:"will sit down — I'll sit down"},
   "salir":{pres:"I leave · he/she leaves",ing:"leaving — I'm leaving",past:"left — I left",fut:"will leave — I'll leave"},
   "venir":{pres:"I come · he/she comes",ing:"coming — I'm coming",past:"came — I came",fut:"will come — I'll come"},
-  "ver":{pres:"I see / watch · he/she sees / watches",ing:"watching — I'm watching",past:"saw / watched — I saw",fut:"will see / watch — I'll watch"}
+  "ver":{pres:"I see / watch · he/she sees / watches",ing:"watching — I'm watching",past:"saw / watched — I saw",fut:"will see / watch — I'll watch"},
+  "poder":{pres:"I can · he/she can",ing:"being able to — I'm able to",past:"could — I could",fut:"will be able to — I'll be able to"}
 };
 const TENSELABEL={pres:"Presente", ing:"Continuo (-ing)", past:"Pasado", fut:"Futuro"};
 function hasConj(c){ const cj=c&&c.conj; return !!(cj && (cj.pres||cj.ing||cj.past||cj.fut)); }
 function fmtConj(cj){ if(!cj) return ""; const out=[]; ["pres","ing","past","fut"].forEach(t=>{ if(cj[t]) out.push(TENSELABEL[t]+"\n"+cj[t]); }); return out.join("\n\n"); }
-const VERSION = "v36";
+const VERSION = "v37";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -633,14 +644,14 @@ function renderFilters(){
 
 // ---- Parte de la oración (verbo / sustantivo / adjetivo / …) ----
 const POSGROUPS = {
-  verb:["bregar","janguear","sentirse","salpicar","nadar","parquear","llegar","tener","agarrar","traer","mamar","decir","dormir","acostarse","tomar","pedir","volar","molestar","quedarse","pegarse","estar","comprar","tardar","volver","limpiar","pensar","creer","llover","cambiar","hacer","jugar","dejar","seguir","ir","poner","echar","montar","meterse","pichear","sentarse","salir","venir","ver"],
+  verb:["bregar","janguear","sentirse","salpicar","nadar","parquear","llegar","tener","agarrar","traer","mamar","decir","dormir","acostarse","tomar","pedir","volar","molestar","quedarse","pegarse","estar","comprar","tardar","volver","limpiar","pensar","creer","llover","cambiar","hacer","jugar","dejar","seguir","ir","poner","echar","montar","meterse","pichear","sentarse","salir","venir","ver","poder"],
   noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad","la tienda","el hielo","el cementerio","el camposanto","la iglesia","la tumba","la abuela","el malecón","el nene","el castillo","la arena","la neverita","el bloqueador","el corillo","el pincho","la sombrilla","el sol","el techo","el libro","la mochila","el cuaderno","la puerta","la ventana","el abanico","la caja","el cuarto","la cama","la cocina","el pasillo","la mamá","la madrastra","el padrastro","el cuello","el hombro","el brazo","el codo","el solazo","la quemadura de sol"],
   adj:["duro","chévere","más barato","mejor","otro","dos","rico","brutal","asqueroso","sucio","nasty","malo","fatal","pegado","izquierdo","derecho","fresco","frío","ready","boricua","rojo","quemao"],
-  adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro","mucho","ahora","cerca de","mañana","ahí","a tiempo","más tarde","allá","hoy","temprano","en la esquina","al fondo","más lejos","ya","todavía no","pa' arriba"],
-  prep:["pa'","pa'l","con","en (transporte)","bajo","dentro de","al lado de","delante de","frente a","detrás de","entre","encima de","debajo de","a la derecha de","a la izquierda de","al final de"],
+  adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro","mucho","ahora","cerca de","mañana","ahí","a tiempo","más tarde","allá","hoy","temprano","en la esquina","al fondo","más lejos","ya","todavía no","pa' arriba","dónde"],
+  prep:["pa'","pa'l","con","en (transporte)","bajo","dentro de","al lado de","delante de","frente a","detrás de","entre","encima de","debajo de","a la derecha de","a la izquierda de","al final de","al"],
   conj:["porque","o","mientras","so","para que","y"],
   pron:["tu","algo","él","tú","alguien"],
-  expr:["dale","mira","oye","gracias","meterme a quizlet","pasar (a flashcards)","siéntate","pégate (a)","tirar agua","vamos","espérame","hablar feo","ponerse a","dile","vete a dormir","duérmete","vete","había","hay","espera","estás","dime","estoy","viendo","¿Estás viendo a alguien jugar?","la parte de atrás","de los codos pa' arriba","Tengo quemao en la parte de atrás del cuello, los hombros y los brazos, de los codos pa' arriba."]
+  expr:["dale","mira","oye","gracias","meterme a quizlet","pasar (a flashcards)","siéntate","pégate (a)","tirar agua","vamos","espérame","hablar feo","ponerse a","dile","vete a dormir","duérmete","vete","había","hay","espera","estás","dime","estoy","viendo","¿Estás viendo a alguien jugar?","la parte de atrás","de los codos pa' arriba","Tengo quemao en la parte de atrás del cuello, los hombros y los brazos, de los codos pa' arriba.","puedo","está","me das chance","claro","¿Puedo ir al baño?","¿Dónde está el baño?","¿Me das chance de ir al baño?"]
 };
 const POSMAP = {};
 Object.keys(POSGROUPS).forEach(p=>POSGROUPS[p].forEach(t=>{ POSMAP[t.trim().toLowerCase()]=p; }));
@@ -674,14 +685,14 @@ const THEMEGROUPS = {
   family:["papá","mami","hermano","hermana","la abuela","el nene","la mamá","la madrastra","el padrastro"],
   school:["el libro","la mochila","el cuaderno"],
   home:["la silla","la mesa","el edificio","el sitio","la compu","zafacón","la bolsa","el techo","la puerta","la ventana","el abanico","la caja","el cuarto","la cama","la cocina","el pasillo"],
-  bathroom:["el baño","toalla","zafacón"],
+  bathroom:["el baño","toalla","zafacón","¿Puedo ir al baño?","¿Dónde está el baño?","¿Me das chance de ir al baño?"],
   food:["la comida","el refresco","bebida","drink","el hielo","tomar","rico","brutal","el pincho"],
   beach:["la playa","el mar","océano","toalla","chancletas","nadar","el agua","salpicar","el malecón","el castillo","la arena","la neverita","el bloqueador","la sombrilla","el sol","el pincho"],
   transport:["guagua","carro","taxi","cajuela","parquear","en (transporte)","las llaves"],
   shopping:["chavos","más barato","comprar","la tienda","pedir"],
   health:["la gripe","la fiebre","mejor","sentirse","dormir","acostarse","vete a dormir","duérmete","que duermas bien","quemao","el solazo","la quemadura de sol","el sol"],
   body:["el cuello","el hombro","el brazo","el codo","quemao","la parte de atrás","de los codos pa' arriba"],
-  social:["gracias","oye","mira","dale","buenas noches","mete mano","pana","janguear","qué bueno","¿qué tal?","¿te gustó?","dime","el corillo"],
+  social:["gracias","oye","mira","dale","buenas noches","mete mano","pana","janguear","qué bueno","¿qué tal?","¿te gustó?","dime","el corillo","claro","me das chance"],
   time:["ahora","ahora mismo","ahorita (orita)","tarde","ayer","todavía","un rato","un momentito","mientras","ya voy","no todavía","ya es tarde.","mañana","más tarde","a tiempo","hoy","temprano","ya","todavía no","acabar de"],
   place:["aquí","pa' allá","pa' acá","afuera","adentro","por ahí","izquierdo","derecho","ven pa'cá","por dentro","el cementerio","el camposanto","la iglesia","la tumba","cerca de","ahí","el malecón","allá","dentro de","al lado de","delante de","frente a","detrás de","entre","encima de","debajo de","a la derecha de","a la izquierda de","al final de","en la esquina","al fondo","más lejos","en camino"],
   slang:["chévere","duro","brutal","al garete","revolú","bregar","nasty","bicho","mámate un bicho.","so","el corillo","pichear","boricua","ready"]
