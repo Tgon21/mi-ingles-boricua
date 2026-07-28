@@ -507,7 +507,18 @@ const SEED = [
   ["claro", "Of course / sure.", "Sí, claro. — Yeah, of course."],
   ["¿Puedo ir al baño?", "Can I go to the bathroom?", "¿Puedo ir al baño? — Can I go to the bathroom?"],
   ["¿Dónde está el baño?", "Where is the bathroom?", "¿Dónde está el baño? — Where is the bathroom?"],
-  ["¿Me das chance de ir al baño?", "Can you let me go to the bathroom? (casual)", "¿Me das chance de ir al baño? — Can you let me go to the bathroom?"]
+  ["¿Me das chance de ir al baño?", "Can you let me go to the bathroom? (casual)", "¿Me das chance de ir al baño? — Can you let me go to the bathroom?"],
+  ["querer", "To want.", "¿Alguien quiere algo? — Does anyone want something?"],
+  ["quiere", "Wants (from 'querer').", "¿Alguien quiere algo de beber? — Does anyone want something to drink?"],
+  ["beber", "To drink.", "¿Quieres algo de beber? — Do you want something to drink?"],
+  ["algo de beber", "Something to drink.", "¿Alguien quiere algo de beber? — Anyone want something to drink?"],
+  ["buscar", "To look for / go get.", "Voy a buscar uno. — I'm going to go get one."],
+  ["uno", "One (a single one).", "Voy a buscar uno. — I'm going to go get one."],
+  ["voy a", "I'm going to (near future).", "Voy a la tienda. — I'm going to the store."],
+  ["coger", "To grab / take / get (casual).", "Voy a coger uno. — I'm going to grab one."],
+  ["la Malta", "Malta (Puerto Rican malt soda).", "Yo quiero una Malta. — I want a Malta."],
+  ["pa' beber", "To drink / for drinking (casual, from 'para beber').", "¿Algo pa' beber? — Something to drink?"],
+  ["¿Alguien quiere algo de beber de la tienda? Voy a buscar uno.", "Anyone want something to drink from the store? I'm going to go get one.", ""]
 ];
 
 const CONJ = {
@@ -554,12 +565,16 @@ const CONJ = {
   "salir":{pres:"I leave · he/she leaves",ing:"leaving — I'm leaving",past:"left — I left",fut:"will leave — I'll leave"},
   "venir":{pres:"I come · he/she comes",ing:"coming — I'm coming",past:"came — I came",fut:"will come — I'll come"},
   "ver":{pres:"I see / watch · he/she sees / watches",ing:"watching — I'm watching",past:"saw / watched — I saw",fut:"will see / watch — I'll watch"},
-  "poder":{pres:"I can · he/she can",ing:"being able to — I'm able to",past:"could — I could",fut:"will be able to — I'll be able to"}
+  "poder":{pres:"I can · he/she can",ing:"being able to — I'm able to",past:"could — I could",fut:"will be able to — I'll be able to"},
+  "querer":{pres:"I want · he/she wants",ing:"wanting — I'm wanting",past:"wanted — I wanted",fut:"will want — I'll want"},
+  "beber":{pres:"I drink · he/she drinks",ing:"drinking — I'm drinking",past:"drank — I drank",fut:"will drink — I'll drink"},
+  "buscar":{pres:"I look for · he/she looks for",ing:"looking for — I'm looking for",past:"looked for — I looked for",fut:"will look for — I'll look for"},
+  "coger":{pres:"I grab / take · he/she grabs / takes",ing:"grabbing — I'm grabbing",past:"grabbed / took — I grabbed",fut:"will grab / take — I'll grab"}
 };
 const TENSELABEL={pres:"Presente", ing:"Continuo (-ing)", past:"Pasado", fut:"Futuro"};
 function hasConj(c){ const cj=c&&c.conj; return !!(cj && (cj.pres||cj.ing||cj.past||cj.fut)); }
 function fmtConj(cj){ if(!cj) return ""; const out=[]; ["pres","ing","past","fut"].forEach(t=>{ if(cj[t]) out.push(TENSELABEL[t]+"\n"+cj[t]); }); return out.join("\n\n"); }
-const VERSION = "v37";
+const VERSION = "v38";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -644,14 +659,14 @@ function renderFilters(){
 
 // ---- Parte de la oración (verbo / sustantivo / adjetivo / …) ----
 const POSGROUPS = {
-  verb:["bregar","janguear","sentirse","salpicar","nadar","parquear","llegar","tener","agarrar","traer","mamar","decir","dormir","acostarse","tomar","pedir","volar","molestar","quedarse","pegarse","estar","comprar","tardar","volver","limpiar","pensar","creer","llover","cambiar","hacer","jugar","dejar","seguir","ir","poner","echar","montar","meterse","pichear","sentarse","salir","venir","ver","poder"],
-  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad","la tienda","el hielo","el cementerio","el camposanto","la iglesia","la tumba","la abuela","el malecón","el nene","el castillo","la arena","la neverita","el bloqueador","el corillo","el pincho","la sombrilla","el sol","el techo","el libro","la mochila","el cuaderno","la puerta","la ventana","el abanico","la caja","el cuarto","la cama","la cocina","el pasillo","la mamá","la madrastra","el padrastro","el cuello","el hombro","el brazo","el codo","el solazo","la quemadura de sol"],
+  verb:["bregar","janguear","sentirse","salpicar","nadar","parquear","llegar","tener","agarrar","traer","mamar","decir","dormir","acostarse","tomar","pedir","volar","molestar","quedarse","pegarse","estar","comprar","tardar","volver","limpiar","pensar","creer","llover","cambiar","hacer","jugar","dejar","seguir","ir","poner","echar","montar","meterse","pichear","sentarse","salir","venir","ver","poder","querer","beber","buscar","coger"],
+  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad","la tienda","el hielo","el cementerio","el camposanto","la iglesia","la tumba","la abuela","el malecón","el nene","el castillo","la arena","la neverita","el bloqueador","el corillo","el pincho","la sombrilla","el sol","el techo","el libro","la mochila","el cuaderno","la puerta","la ventana","el abanico","la caja","el cuarto","la cama","la cocina","el pasillo","la mamá","la madrastra","el padrastro","el cuello","el hombro","el brazo","el codo","el solazo","la quemadura de sol","la Malta"],
   adj:["duro","chévere","más barato","mejor","otro","dos","rico","brutal","asqueroso","sucio","nasty","malo","fatal","pegado","izquierdo","derecho","fresco","frío","ready","boricua","rojo","quemao"],
   adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro","mucho","ahora","cerca de","mañana","ahí","a tiempo","más tarde","allá","hoy","temprano","en la esquina","al fondo","más lejos","ya","todavía no","pa' arriba","dónde"],
   prep:["pa'","pa'l","con","en (transporte)","bajo","dentro de","al lado de","delante de","frente a","detrás de","entre","encima de","debajo de","a la derecha de","a la izquierda de","al final de","al"],
   conj:["porque","o","mientras","so","para que","y"],
-  pron:["tu","algo","él","tú","alguien"],
-  expr:["dale","mira","oye","gracias","meterme a quizlet","pasar (a flashcards)","siéntate","pégate (a)","tirar agua","vamos","espérame","hablar feo","ponerse a","dile","vete a dormir","duérmete","vete","había","hay","espera","estás","dime","estoy","viendo","¿Estás viendo a alguien jugar?","la parte de atrás","de los codos pa' arriba","Tengo quemao en la parte de atrás del cuello, los hombros y los brazos, de los codos pa' arriba.","puedo","está","me das chance","claro","¿Puedo ir al baño?","¿Dónde está el baño?","¿Me das chance de ir al baño?"]
+  pron:["tu","algo","él","tú","alguien","uno"],
+  expr:["dale","mira","oye","gracias","meterme a quizlet","pasar (a flashcards)","siéntate","pégate (a)","tirar agua","vamos","espérame","hablar feo","ponerse a","dile","vete a dormir","duérmete","vete","había","hay","espera","estás","dime","estoy","viendo","¿Estás viendo a alguien jugar?","la parte de atrás","de los codos pa' arriba","Tengo quemao en la parte de atrás del cuello, los hombros y los brazos, de los codos pa' arriba.","puedo","está","me das chance","claro","¿Puedo ir al baño?","¿Dónde está el baño?","¿Me das chance de ir al baño?","quiere","algo de beber","voy a","pa' beber","¿Alguien quiere algo de beber de la tienda? Voy a buscar uno."]
 };
 const POSMAP = {};
 Object.keys(POSGROUPS).forEach(p=>POSGROUPS[p].forEach(t=>{ POSMAP[t.trim().toLowerCase()]=p; }));
@@ -686,7 +701,7 @@ const THEMEGROUPS = {
   school:["el libro","la mochila","el cuaderno"],
   home:["la silla","la mesa","el edificio","el sitio","la compu","zafacón","la bolsa","el techo","la puerta","la ventana","el abanico","la caja","el cuarto","la cama","la cocina","el pasillo"],
   bathroom:["el baño","toalla","zafacón","¿Puedo ir al baño?","¿Dónde está el baño?","¿Me das chance de ir al baño?"],
-  food:["la comida","el refresco","bebida","drink","el hielo","tomar","rico","brutal","el pincho"],
+  food:["la comida","el refresco","bebida","drink","el hielo","tomar","rico","brutal","el pincho","la Malta","beber","algo de beber","pa' beber","¿Alguien quiere algo de beber de la tienda? Voy a buscar uno."],
   beach:["la playa","el mar","océano","toalla","chancletas","nadar","el agua","salpicar","el malecón","el castillo","la arena","la neverita","el bloqueador","la sombrilla","el sol","el pincho"],
   transport:["guagua","carro","taxi","cajuela","parquear","en (transporte)","las llaves"],
   shopping:["chavos","más barato","comprar","la tienda","pedir"],
