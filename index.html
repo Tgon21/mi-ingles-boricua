@@ -630,7 +630,12 @@ const SEED = [
   ["estancao", "Stuck (casual, from 'estancado').", "Estoy bien estancao aquí. — I'm really stuck here."],
   ["ayudar", "To help.", "¿Me ayudas con este juego? — Can you help me with this game?"],
   ["este", "This (masculine).", "Termina este nivel. — Finish this level."],
-  ["que", "That / because ('cause).", "Termina este nivel, que no puedo. — Finish this level, 'cause I can't."]
+  ["que", "That / because ('cause).", "Termina este nivel, que no puedo. — Finish this level, 'cause I can't."],
+  ["peludo", "Hairy (peludo / peluda).", "Estoy peluda hoy. — I'm hairy today."],
+  ["arreglarse", "To get ready / fix oneself up.", "¿Te vas a arreglar? — Are you going to get ready?"],
+  ["la falda", "Skirt.", "¿Por qué no te pusiste la falda? — Why didn't you put on the skirt?"],
+  ["cómodo", "Comfortable (cómodo / cómoda).", "No me siento cómoda. — I don't feel comfortable."],
+  ["ponerse", "To put on (clothes) / to become.", "¿Por qué no te pusiste la falda? — Why didn't you put on the skirt?"]
 ];
 
 const CONJ = {
@@ -698,12 +703,14 @@ const CONJ = {
   "esperar":{pres:"I wait / hope · he/she waits",ing:"waiting — I'm waiting",past:"waited / hoped — I waited",fut:"will wait — I'll wait"},
   "tronar":{pres:"it thunders",ing:"thundering — it's thundering",past:"thundered — it thundered",fut:"will thunder — it'll thunder"},
   "terminar":{pres:"I finish · he/she finishes",ing:"finishing — I'm finishing",past:"finished — I finished",fut:"will finish — I'll finish"},
-  "ayudar":{pres:"I help · he/she helps",ing:"helping — I'm helping",past:"helped — I helped",fut:"will help — I'll help"}
+  "ayudar":{pres:"I help · he/she helps",ing:"helping — I'm helping",past:"helped — I helped",fut:"will help — I'll help"},
+  "arreglarse":{pres:"I get ready · he/she gets ready",ing:"getting ready — I'm getting ready",past:"got ready — I got ready",fut:"will get ready — I'll get ready"},
+  "ponerse":{pres:"I put on · he/she puts on",ing:"putting on — I'm putting on",past:"put on — I put on",fut:"will put on — I'll put on"}
 };
 const TENSELABEL={pres:"Presente", ing:"Continuo (-ing)", past:"Pasado", fut:"Futuro"};
 function hasConj(c){ const cj=c&&c.conj; return !!(cj && (cj.pres||cj.ing||cj.past||cj.fut)); }
 function fmtConj(cj){ if(!cj) return ""; const out=[]; ["pres","ing","past","fut"].forEach(t=>{ if(cj[t]) out.push(TENSELABEL[t]+"\n"+cj[t]); }); return out.join("\n\n"); }
-const VERSION = "v49";
+const VERSION = "v50";
 const KEY = "pr_ingles_deck_v1";
 const SEEDKEY = "pr_ingles_seed_keys";
 let deck = load();
@@ -788,9 +795,9 @@ function renderFilters(){
 
 // ---- Parte de la oración (verbo / sustantivo / adjetivo / …) ----
 const POSGROUPS = {
-  verb:["bregar","janguear","sentirse","salpicar","nadar","parquear","llegar","tener","agarrar","traer","mamar","decir","dormir","acostarse","tomar","pedir","volar","molestar","quedarse","pegarse","estar","comprar","tardar","volver","limpiar","pensar","creer","llover","cambiar","hacer","jugar","dejar","seguir","ir","poner","echar","montar","meterse","pichear","sentarse","salir","venir","ver","poder","querer","beber","buscar","coger","ser","probar","encontrar","comer","andar","encender","conseguir","mover","servir","cargar","pararse","caminar","correr","esperar","tronar","terminar","ayudar"],
-  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad","la tienda","el hielo","el cementerio","el camposanto","la iglesia","la tumba","la abuela","el malecón","el nene","el castillo","la arena","la neverita","el bloqueador","el corillo","el pincho","la sombrilla","el sol","el techo","el libro","la mochila","el cuaderno","la puerta","la ventana","el abanico","la caja","el cuarto","la cama","la cocina","el pasillo","la mamá","la madrastra","el padrastro","el cuello","el hombro","el brazo","el codo","el solazo","la quemadura de sol","la Malta","la jeva","la edad","el drama","la manera","la tira","la tirita","la muestra","un montón","el perfume","el spray","la fiesta","el camino","el Viejo San Juan","Estados Unidos","la novia","la luz","la sala","la oficina","el cuerpo","la cabeza","el torso","la mano","la pierna","el pie","el miedo","el perro","la altura","la montaña rusa","la nena","el tiempo","el nivel","el juego"],
-  adj:["duro","chévere","más barato","mejor","otro","dos","rico","brutal","asqueroso","sucio","nasty","malo","fatal","pegado","izquierdo","derecho","fresco","frío","ready","boricua","rojo","quemao","viejo","rápido","oscuro","lleno","humano","principal","obvio","perfecto","estancao"],
+  verb:["bregar","janguear","sentirse","salpicar","nadar","parquear","llegar","tener","agarrar","traer","mamar","decir","dormir","acostarse","tomar","pedir","volar","molestar","quedarse","pegarse","estar","comprar","tardar","volver","limpiar","pensar","creer","llover","cambiar","hacer","jugar","dejar","seguir","ir","poner","echar","montar","meterse","pichear","sentarse","salir","venir","ver","poder","querer","beber","buscar","coger","ser","probar","encontrar","comer","andar","encender","conseguir","mover","servir","cargar","pararse","caminar","correr","esperar","tronar","terminar","ayudar","arreglarse","ponerse"],
+  noun:["la compu","un momentito","guagua","chavos","zafacón","pana","revolú","carro","chancletas","cajuela","las llaves","hermana","un rato","taxi","la gripe","la fiebre","hermano","el mar","océano","la playa","el agua","papá","toalla","la bolsa","bicho","mami","abeja","drink","bebida","el refresco","la comida","el edificio","la silla","la mesa","el baño","el sitio","el zapato","verdad","la tienda","el hielo","el cementerio","el camposanto","la iglesia","la tumba","la abuela","el malecón","el nene","el castillo","la arena","la neverita","el bloqueador","el corillo","el pincho","la sombrilla","el sol","el techo","el libro","la mochila","el cuaderno","la puerta","la ventana","el abanico","la caja","el cuarto","la cama","la cocina","el pasillo","la mamá","la madrastra","el padrastro","el cuello","el hombro","el brazo","el codo","el solazo","la quemadura de sol","la Malta","la jeva","la edad","el drama","la manera","la tira","la tirita","la muestra","un montón","el perfume","el spray","la fiesta","el camino","el Viejo San Juan","Estados Unidos","la novia","la luz","la sala","la oficina","el cuerpo","la cabeza","el torso","la mano","la pierna","el pie","el miedo","el perro","la altura","la montaña rusa","la nena","el tiempo","el nivel","el juego","la falda"],
+  adj:["duro","chévere","más barato","mejor","otro","dos","rico","brutal","asqueroso","sucio","nasty","malo","fatal","pegado","izquierdo","derecho","fresco","frío","ready","boricua","rojo","quemao","viejo","rápido","oscuro","lleno","humano","principal","obvio","perfecto","estancao","peludo","cómodo"],
   adv:["aquí","ahora mismo","pa' allá","tarde","ayer","bien (intensifier)","ahorita (orita)","todavía","no todavía","por ahí","pa' acá","afuera","adentro","por dentro","mucho","ahora","cerca de","mañana","ahí","a tiempo","más tarde","allá","hoy","temprano","en la esquina","al fondo","más lejos","ya","todavía no","pa' arriba","dónde","siempre","así","tal vez","allí","después"],
   prep:["pa'","pa'l","con","en (transporte)","bajo","dentro de","al lado de","delante de","frente a","detrás de","entre","encima de","debajo de","a la derecha de","a la izquierda de","al final de","al","antes de","durante","después de"],
   conj:["porque","o","mientras","so","para que","y","cuando","pero","así que","que"],
@@ -833,9 +840,9 @@ const THEMEGROUPS = {
   food:["la comida","el refresco","bebida","drink","el hielo","tomar","rico","brutal","el pincho","la Malta","beber","algo de beber","pa' beber","¿Alguien quiere algo de beber de la tienda? Voy a buscar uno.","comer","tener hambre","pasar hambre"],
   beach:["la playa","el mar","océano","toalla","chancletas","nadar","el agua","salpicar","el malecón","el castillo","la arena","la neverita","el bloqueador","la sombrilla","el sol","el pincho"],
   transport:["guagua","carro","taxi","cajuela","parquear","en (transporte)","las llaves"],
-  shopping:["chavos","más barato","comprar","la tienda","pedir","la tira","la tirita","la muestra","el perfume","el spray","un montón","la mejor manera","probar","pa' probar"],
+  shopping:["chavos","más barato","comprar","la tienda","pedir","la tira","la tirita","la muestra","el perfume","el spray","un montón","la mejor manera","probar","pa' probar","la falda"],
   health:["la gripe","la fiebre","mejor","sentirse","dormir","acostarse","vete a dormir","duérmete","que duermas bien","quemao","el solazo","la quemadura de sol","el sol"],
-  body:["el cuello","el hombro","el brazo","el codo","quemao","la parte de atrás","de los codos pa' arriba","el cuerpo","la cabeza","el torso","la mano","la pierna","el pie","humano"],
+  body:["el cuello","el hombro","el brazo","el codo","quemao","la parte de atrás","de los codos pa' arriba","el cuerpo","la cabeza","el torso","la mano","la pierna","el pie","humano","peludo"],
   social:["gracias","oye","mira","dale","buenas noches","mete mano","pana","janguear","qué bueno","¿qué tal?","¿te gustó?","dime","el corillo","claro","me das chance","la jeva","el drama","la fiesta","la novia","que tengas un buen día","ojalá","¿verdad?","¿no?","nos vemos","obvio","perfecto"],
   time:["ahora","ahora mismo","ahorita (orita)","tarde","ayer","todavía","un rato","un momentito","mientras","ya voy","no todavía","ya es tarde.","mañana","más tarde","a tiempo","hoy","temprano","ya","todavía no","acabar de","cuando","siempre","la edad","cuando seas viejo","antes de","durante","después","después de","el tiempo"],
   place:["aquí","pa' allá","pa' acá","afuera","adentro","por ahí","izquierdo","derecho","ven pa'cá","por dentro","el cementerio","el camposanto","la iglesia","la tumba","cerca de","ahí","el malecón","allá","dentro de","al lado de","delante de","frente a","detrás de","entre","encima de","debajo de","a la derecha de","a la izquierda de","al final de","en la esquina","al fondo","más lejos","en camino","pa' aquí","allí","el Viejo San Juan","el camino","Estados Unidos","por aquí","la oficina","de al lado"],
